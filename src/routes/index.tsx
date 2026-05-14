@@ -5,6 +5,7 @@ import { UserView } from "@/components/sentry/UserView";
 import { AdminView } from "@/components/sentry/AdminView";
 import { ClientView } from "@/components/sentry/ClientView";
 import { AnalyticsView } from "@/components/sentry/AnalyticsView";
+import { ThemeToggle } from "@/components/sentry/ThemeToggle";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
@@ -26,6 +27,7 @@ function Index() {
 
   return (
     <div className="flex min-h-screen w-full">
+      <ThemeToggle />
       <SentrySidebar active={view} onChange={setView} />
       <main className="flex-1 min-w-0 flex flex-col">
         {view === "user" && <UserView />}
