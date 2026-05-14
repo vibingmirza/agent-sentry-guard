@@ -4,6 +4,7 @@ import { SentrySidebar, type SentryView } from "@/components/sentry/Sidebar";
 import { UserView } from "@/components/sentry/UserView";
 import { AdminView } from "@/components/sentry/AdminView";
 import { ClientView } from "@/components/sentry/ClientView";
+import { AnalyticsView } from "@/components/sentry/AnalyticsView";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
@@ -30,6 +31,7 @@ function Index() {
         {view === "user" && <UserView />}
         {view === "admin" && <AdminView />}
         {view === "client" && <ClientView />}
+        {view === "analytics" && <AnalyticsView />}
       </main>
       <Toaster theme="dark" position="top-right" richColors />
     </div>
