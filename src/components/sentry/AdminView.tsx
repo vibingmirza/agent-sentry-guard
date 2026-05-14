@@ -102,7 +102,7 @@ export function AdminView() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <HealthMeter killed={killed} />
         <MetricCard label="Agents Online" value={killed ? "0 / 12" : "12 / 12"} icon={Activity} accent="cyan" />
-        <MetricCard label="Threats Blocked (24h)" value="2" icon={AlertTriangle} accent="crimson" />
+        <MetricCard label="Threats Blocked (24h)" value={String(logs.filter((l) => l.status === "BLOCKED").length)} icon={AlertTriangle} accent="crimson" />
       </div>
 
       {/* Logs table */}
