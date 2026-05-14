@@ -126,7 +126,7 @@ export function AdminView() {
               </tr>
             </thead>
             <tbody>
-              {LOGS.map((log, i) => {
+              {logs.map((log, i) => {
                 const blocked = log.status === "BLOCKED";
                 const Icon = log.icon;
                 return (
