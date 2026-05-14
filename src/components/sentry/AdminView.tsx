@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Activity, AlertTriangle, Power, ShieldCheck, ShieldAlert, Cpu, Database, Mail, KeyRound } from "lucide-react";
+import { Activity, AlertTriangle, Power, ShieldCheck, ShieldAlert, Cpu, Database, Mail, KeyRound, Zap, Siren } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
