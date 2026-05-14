@@ -83,9 +83,18 @@ export function AdminView() {
             Real-time multi-agent telemetry, audit logs, and emergency controls.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className={cn("size-2 rounded-full", killed ? "bg-sentry-crimson sentry-glow-crimson" : "bg-sentry-emerald sentry-glow-emerald")} />
-          {killed ? "FLEET PAUSED" : "FLEET LIVE"} · {new Date().toLocaleTimeString()}
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={simulateIncident}
+            className="bg-sentry-panel-2 border border-sentry-cyan/40 text-sentry-cyan hover:bg-sentry-cyan/10 hover:text-sentry-cyan font-semibold uppercase tracking-wider sentry-glow-cyan"
+          >
+            <Siren className="size-4 mr-1" />
+            Simulate Incident
+          </Button>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className={cn("size-2 rounded-full", killed ? "bg-sentry-crimson sentry-glow-crimson" : "bg-sentry-emerald sentry-glow-emerald")} />
+            {killed ? "FLEET PAUSED" : "FLEET LIVE"}
+          </div>
         </div>
       </header>
 
