@@ -63,25 +63,39 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  /* Agent-Sentry dark theme */
+  --background: oklch(0.18 0.02 250);
+  --foreground: oklch(0.96 0.01 240);
+  --sentry-cyan: oklch(0.82 0.18 200);
+  --sentry-emerald: oklch(0.78 0.19 155);
+  --sentry-crimson: oklch(0.65 0.25 25);
+  --sentry-amber: oklch(0.82 0.17 75);
+  --sentry-panel: oklch(0.22 0.02 250);
+  --sentry-panel-2: oklch(0.26 0.02 250);
+  --sentry-border: oklch(0.32 0.03 230);
+  --glow-cyan: 0 0 20px oklch(0.82 0.18 200 / 0.5);
+  --glow-emerald: 0 0 20px oklch(0.78 0.19 155 / 0.5);
+  --glow-crimson: 0 0 24px oklch(0.65 0.25 25 / 0.6);
+  --gradient-panel: linear-gradient(145deg, oklch(0.22 0.02 250), oklch(0.18 0.02 250));
+  --_unused_bg: oklch(1 0 0);
+  --_unused_fg: oklch(0.129 0.042 264.695);
+  --card: oklch(0.22 0.02 250);
+  --card-foreground: oklch(0.96 0.01 240);
+  --popover: oklch(0.22 0.02 250);
+  --popover-foreground: oklch(0.96 0.01 240);
+  --primary: oklch(0.82 0.18 200);
+  --primary-foreground: oklch(0.15 0.02 250);
+  --secondary: oklch(0.26 0.02 250);
+  --secondary-foreground: oklch(0.96 0.01 240);
+  --muted: oklch(0.26 0.02 250);
+  --muted-foreground: oklch(0.7 0.02 240);
+  --accent: oklch(0.78 0.19 155);
+  --accent-foreground: oklch(0.15 0.02 250);
+  --destructive: oklch(0.65 0.25 25);
+  --destructive-foreground: oklch(0.98 0.01 240);
+  --border: oklch(0.32 0.03 230 / 0.5);
+  --input: oklch(0.26 0.02 250);
+  --ring: oklch(0.82 0.18 200);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +154,38 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    background-image:
+      radial-gradient(circle at 15% 10%, oklch(0.82 0.18 200 / 0.08), transparent 40%),
+      radial-gradient(circle at 85% 90%, oklch(0.78 0.19 155 / 0.06), transparent 45%);
+    min-height: 100vh;
   }
 }
+
+@theme inline {
+  --color-sentry-cyan: var(--sentry-cyan);
+  --color-sentry-emerald: var(--sentry-emerald);
+  --color-sentry-crimson: var(--sentry-crimson);
+  --color-sentry-amber: var(--sentry-amber);
+  --color-sentry-panel: var(--sentry-panel);
+  --color-sentry-panel-2: var(--sentry-panel-2);
+  --color-sentry-border: var(--sentry-border);
+}
+
+@keyframes sentry-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 oklch(0.65 0.25 25 / 0.6); }
+  50% { opacity: 0.85; box-shadow: 0 0 0 12px oklch(0.65 0.25 25 / 0); }
+}
+@keyframes sentry-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.sentry-glow-cyan { box-shadow: var(--glow-cyan); }
+.sentry-glow-emerald { box-shadow: var(--glow-emerald); }
+.sentry-glow-crimson { box-shadow: var(--glow-crimson); animation: sentry-pulse 2s infinite; }
+.sentry-grid-bg {
+  background-image:
+    linear-gradient(oklch(0.82 0.18 200 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.82 0.18 200 / 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
