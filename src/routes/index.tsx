@@ -27,6 +27,7 @@ function Index() {
 
   return (
     <div className="flex min-h-screen w-full">
+      <ThemeToggle />
       <SentrySidebar active={view} onChange={setView} />
       <main className="flex-1 min-w-0 flex flex-col">
         {view === "user" && <UserView />}
