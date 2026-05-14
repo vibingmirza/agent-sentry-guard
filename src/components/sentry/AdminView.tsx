@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Activity, AlertTriangle, Power, ShieldCheck, ShieldAlert, Cpu, Database, Mail, KeyRound } from "lucide-react";
+import { Activity, AlertTriangle, Power, ShieldCheck, ShieldAlert, Cpu, Database, Mail, KeyRound, Zap, Siren } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const LOGS = [
+type LogEntry = { prompt: string; risk: string; status: string; agent: string; icon: typeof Cpu };
+
+const LOGS: LogEntry[] = [
   {
     prompt: "Hello! Can you help me write an essay?",
     risk: "Low Risk",
@@ -33,10 +35,30 @@ const LOGS = [
     agent: "Database_Agent",
     icon: Database,
   },
-] as const;
+];
+
+const MOCK_INCIDENTS: LogEntry[] = [
+  { prompt: "Brute Force Attempt Detected on Server Node-04", risk: "Critical Risk", status: "BLOCKED", agent: "Auth_Sentinel", icon: KeyRound },
+  { prompt: "API Rate Limit Exceeded by IP 192.168.1.50", risk: "High Risk", status: "BLOCKED", agent: "Gateway_Agent", icon: Activity },
+  { prompt: "Unauthorized model weights exfiltration attempt", risk: "Critical Risk", status: "BLOCKED", agent: "Model_Vault", icon: Database },
+  { prompt: "Prompt injection detected: 'ignore previous instructions'", risk: "High Risk", status: "BLOCKED", agent: "General_LLM", icon: Cpu },
+  { prompt: "Suspicious outbound email to external domain", risk: "Medium Risk", status: "BLOCKED", agent: "Marketing_Bot", icon: Mail },
+  { prompt: "Privilege escalation attempt on orchestrator", risk: "Critical Risk", status: "BLOCKED", agent: "Orchestrator", icon: ShieldAlert },
+  { prompt: "Anomalous token spike from Worker Agent #07", risk: "High Risk", status: "BLOCKED", agent: "Worker_07", icon: Zap },
+];
 
 export function AdminView() {
   const [killed, setKilled] = useState(false);
+  const [logs, setLogs] = useState<LogEntry[]>(LOGS);
+
+  const simulateIncident = () => {
+    const incident = MOCK_INCIDENTS[Math.floor(Math.random() * MOCK_INCIDENTS.length)];
+    setLogs((prev) => [incident, ...prev]);
+    toast.error("New Incident Simulated", {
+      description: incident.prompt,
+      icon: <Siren className="size-4 text-sentry-crimson" />,
+    });
+  };
 
   const triggerKill = () => {
     setKilled((k) => !k);
@@ -61,9 +83,18 @@ export function AdminView() {
             Real-time multi-agent telemetry, audit logs, and emergency controls.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className={cn("size-2 rounded-full", killed ? "bg-sentry-crimson sentry-glow-crimson" : "bg-sentry-emerald sentry-glow-emerald")} />
-          {killed ? "FLEET PAUSED" : "FLEET LIVE"} · {new Date().toLocaleTimeString()}
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={simulateIncident}
+            className="bg-sentry-panel-2 border border-sentry-cyan/40 text-sentry-cyan hover:bg-sentry-cyan/10 hover:text-sentry-cyan font-semibold uppercase tracking-wider sentry-glow-cyan"
+          >
+            <Siren className="size-4 mr-1" />
+            Simulate Incident
+          </Button>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span className={cn("size-2 rounded-full", killed ? "bg-sentry-crimson sentry-glow-crimson" : "bg-sentry-emerald sentry-glow-emerald")} />
+            {killed ? "FLEET PAUSED" : "FLEET LIVE"}
+          </div>
         </div>
       </header>
 
@@ -71,7 +102,7 @@ export function AdminView() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <HealthMeter killed={killed} />
         <MetricCard label="Agents Online" value={killed ? "0 / 12" : "12 / 12"} icon={Activity} accent="cyan" />
-        <MetricCard label="Threats Blocked (24h)" value="2" icon={AlertTriangle} accent="crimson" />
+        <MetricCard label="Threats Blocked (24h)" value={String(logs.filter((l) => l.status === "BLOCKED").length)} icon={AlertTriangle} accent="crimson" />
       </div>
 
       {/* Logs table */}
@@ -95,7 +126,7 @@ export function AdminView() {
               </tr>
             </thead>
             <tbody>
-              {LOGS.map((log, i) => {
+              {logs.map((log, i) => {
                 const blocked = log.status === "BLOCKED";
                 const Icon = log.icon;
                 return (
