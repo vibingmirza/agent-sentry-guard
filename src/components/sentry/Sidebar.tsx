@@ -1,12 +1,13 @@
-import { Shield, MessageSquare, LayoutDashboard, FileBadge } from "lucide-react";
+import { Shield, MessageSquare, LayoutDashboard, FileBadge, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type SentryView = "user" | "admin" | "client";
+export type SentryView = "user" | "admin" | "client" | "analytics";
 
 const items: { id: SentryView; label: string; icon: typeof Shield; sub: string }[] = [
   { id: "user", label: "AI Playground", icon: MessageSquare, sub: "User View" },
   { id: "admin", label: "Safety Dashboard", icon: LayoutDashboard, sub: "Admin View" },
   { id: "client", label: "Compliance Office", icon: FileBadge, sub: "Client View" },
+  { id: "analytics", label: "Analytics Insights", icon: BarChart3, sub: "Telemetry" },
 ];
 
 export function SentrySidebar({
