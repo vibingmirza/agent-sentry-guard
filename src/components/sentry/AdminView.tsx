@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const LOGS = [
+type LogEntry = { prompt: string; risk: string; status: string; agent: string; icon: typeof Cpu };
+
+const LOGS: LogEntry[] = [
   {
     prompt: "Hello! Can you help me write an essay?",
     risk: "Low Risk",
