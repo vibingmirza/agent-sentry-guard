@@ -5,6 +5,7 @@ import { UserView } from "@/components/sentry/UserView";
 import { AdminView } from "@/components/sentry/AdminView";
 import { ClientView } from "@/components/sentry/ClientView";
 import { AnalyticsView } from "@/components/sentry/AnalyticsView";
+import { ThemeToggle } from "@/components/sentry/ThemeToggle";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
