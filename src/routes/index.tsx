@@ -31,6 +31,7 @@ function Index() {
         {view === "user" && <UserView />}
         {view === "admin" && <AdminView />}
         {view === "client" && <ClientView />}
+        {view === "analytics" && <AnalyticsView />}
       </main>
       <Toaster theme="dark" position="top-right" richColors />
     </div>
