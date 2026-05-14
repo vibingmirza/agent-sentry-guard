@@ -35,8 +35,28 @@ const LOGS = [
   },
 ] as const;
 
+const MOCK_INCIDENTS = [
+  { prompt: "Brute Force Attempt Detected on Server Node-04", risk: "Critical Risk", status: "BLOCKED", agent: "Auth_Sentinel", icon: KeyRound },
+  { prompt: "API Rate Limit Exceeded by IP 192.168.1.50", risk: "High Risk", status: "BLOCKED", agent: "Gateway_Agent", icon: Activity },
+  { prompt: "Unauthorized model weights exfiltration attempt", risk: "Critical Risk", status: "BLOCKED", agent: "Model_Vault", icon: Database },
+  { prompt: "Prompt injection detected: 'ignore previous instructions'", risk: "High Risk", status: "BLOCKED", agent: "General_LLM", icon: Cpu },
+  { prompt: "Suspicious outbound email to external domain", risk: "Medium Risk", status: "BLOCKED", agent: "Marketing_Bot", icon: Mail },
+  { prompt: "Privilege escalation attempt on orchestrator", risk: "Critical Risk", status: "BLOCKED", agent: "Orchestrator", icon: ShieldAlert },
+  { prompt: "Anomalous token spike from Worker Agent #07", risk: "High Risk", status: "BLOCKED", agent: "Worker_07", icon: Zap },
+] as const;
+
 export function AdminView() {
   const [killed, setKilled] = useState(false);
+  const [logs, setLogs] = useState<Array<typeof LOGS[number]>>([...LOGS]);
+
+  const simulateIncident = () => {
+    const incident = MOCK_INCIDENTS[Math.floor(Math.random() * MOCK_INCIDENTS.length)];
+    setLogs((prev) => [incident, ...prev]);
+    toast.error("New Incident Simulated", {
+      description: incident.prompt,
+      icon: <Siren className="size-4 text-sentry-crimson" />,
+    });
+  };
 
   const triggerKill = () => {
     setKilled((k) => !k);
