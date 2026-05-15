@@ -679,9 +679,3 @@ function HealthMeter({ killed }: { killed: boolean }) {
     </div>
   );
 }
-
-// Suppress unused import warnings in case linter is strict about icons used only conditionally
-void Cpu;
-void Database;
-void Mail;
-void KeyRound;
