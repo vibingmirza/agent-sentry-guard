@@ -6,6 +6,7 @@ import { AdminView } from "@/components/sentry/AdminView";
 import { ClientView } from "@/components/sentry/ClientView";
 import { AnalyticsView } from "@/components/sentry/AnalyticsView";
 import { ThemeToggle } from "@/components/sentry/ThemeToggle";
+import { AlertsProvider } from "@/components/sentry/alerts-store";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
@@ -26,16 +27,18 @@ function Index() {
   const [view, setView] = useState<SentryView>("user");
 
   return (
-    <div className="flex min-h-screen w-full">
-      <ThemeToggle />
-      <SentrySidebar active={view} onChange={setView} />
-      <main className="flex-1 min-w-0 flex flex-col">
-        {view === "user" && <UserView />}
-        {view === "admin" && <AdminView />}
-        {view === "client" && <ClientView />}
-        {view === "analytics" && <AnalyticsView />}
-      </main>
-      <Toaster theme="dark" position="top-right" richColors />
-    </div>
+    <AlertsProvider>
+      <div className="flex min-h-screen w-full">
+        <ThemeToggle />
+        <SentrySidebar active={view} onChange={setView} />
+        <main className="flex-1 min-w-0 flex flex-col">
+          {view === "user" && <UserView />}
+          {view === "admin" && <AdminView />}
+          {view === "client" && <ClientView />}
+          {view === "analytics" && <AnalyticsView />}
+        </main>
+        <Toaster theme="dark" position="top-right" richColors />
+      </div>
+    </AlertsProvider>
   );
 }
