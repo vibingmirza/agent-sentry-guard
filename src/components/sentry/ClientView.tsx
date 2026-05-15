@@ -75,9 +75,9 @@ export function ClientView() {
             <div className="text-sm font-semibold">{today}</div>
           </div>
           <div className="text-center">
-            <div className="font-[cursive] text-2xl text-sentry-cyan italic">Dr. A. Khan</div>
+            <div className="font-[cursive] text-2xl text-sentry-cyan italic">Mirza Faizan Baig</div>
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground border-t border-border pt-1 mt-1">
-              Chief AI Compliance Officer
+              Director of Sovereign Intelligence
             </div>
           </div>
           <div className="text-right">
