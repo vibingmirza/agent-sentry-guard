@@ -632,7 +632,39 @@ export function AdminView() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Inspect / Chain of Thought dialog */}
+      <Dialog open={!!inspecting} onOpenChange={(o) => !o && setInspecting(null)}>
+        <DialogContent className="bg-sentry-panel border-sentry-cyan/40 max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Brain className="size-5 text-sentry-cyan" />
+              {t.inspect} · {t.chainOfThought}
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Reasoning trace from Sentry-Guard Executive Intelligence.
+            </DialogDescription>
+          </DialogHeader>
+          {inspecting && (
+            <div className="space-y-3">
+              <div className="rounded-md border border-border bg-sentry-panel-2 p-3 text-sm">
+                <p className="text-foreground">{inspecting.prompt}</p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-mono">
+                  {inspecting.type} · {inspecting.ip} · {inspecting.agent}
+                </p>
+              </div>
+              <pre className="font-mono-tech text-xs leading-relaxed whitespace-pre-wrap bg-black/40 border border-sentry-cyan/30 rounded-md p-4 text-sentry-cyan/90">
+{inspecting.chainOfThought}
+              </pre>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setInspecting(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
+    </TooltipProvider>
   );
 }
 
