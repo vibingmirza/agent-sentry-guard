@@ -1,55 +1,77 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Send, Bot, User, ShieldCheck, Loader2, Sparkles } from "lucide-react";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport, type UIMessage } from "ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useApp } from "./app-context";
 
+interface MockMessage {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+}
+
 export function UserView() {
   const { t, region, lang } = useApp();
-  const transport = useRef(new DefaultChatTransport({ api: "/api/chat" })).current;
 
-  const initial: UIMessage[] = [
+  const initial: MockMessage[] = [
     {
       id: "sys-welcome",
       role: "assistant",
-      parts: [
-        {
-          type: "text",
-          text:
-            `**Director ${t.directorName}** — Sentry-Guard Executive Intelligence online.\n\n` +
-            `Region context: **${region === "pakistan" ? t.pakistan : t.global}**. ` +
-            `I'm tuned to National Security, Vision 2035 and SDG 9 priorities. How can I assist?`,
-        },
-      ],
+      text:
+        `**Director ${t.directorName}** — Sentry-Guard Executive Intelligence online.\n\n` +
+        `Region context: **${region === "pakistan" ? t.pakistan : t.global}**. ` +
+        `I'm tuned to National Security, Vision 2035 and SDG 9 priorities. How can I assist?`,
     },
   ];
 
-  const { messages, sendMessage, status, error } = useChat({
-    id: "sentry-playground",
-    messages: initial,
-    transport,
-  });
-
-  const [input, setInput] = useInput();
+  const [messages, setMessages] = useState<MockMessage[]>(initial);
+  const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, status]);
+  }, [messages, loading]);
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [status]);
+  }, [loading]);
 
   const send = (text: string) => {
-    if (!text.trim()) return;
-    sendMessage({ text: text.trim() });
+    if (!text.trim() || loading) return;
+
+    const userText = text.trim();
+    const userMessageId = `user-${Date.now()}`;
+    
+    // 1. Commit user message to chat state
+    setMessages((prev) => [...prev, { id: userMessageId, role: "user", text: userText }]);
     setInput("");
+    setLoading(true);
+
+    // 2. Trigger realistic delay & process mock response
+    setTimeout(() => {
+      let simulatedAnswer = "Command acknowledged, Director Baig. System telemetry stable under current national security protocol metrics.";
+      const cleanInput = userText.toLowerCase();
+
+      if (cleanInput.includes("threats") || cleanInput.includes("brief")) {
+        simulatedAnswer = `**Director Mirza Faizan Baig**, today's tactical telemetry indicates three primary vectors requiring your attention:\n\n1. **Threat Alpha (Global):** The Canvas supply-chain data breach has expanded. Isolation protocols are active for all non-human API identities linked to our monitored networks.\n2. **Threat Bravo (National):** Accumulating 'Silent AI' risk exposures are creating structural vulnerabilities within corporate workflows. Pre-emptive monitoring is actively tracking unauthorized permission escalations.\n3. **Threat Charlie (Pakistan Hub):** Geopolitical cyber-espionage anomalies detected near border network infrastructure. High-frequency traffic monitoring is engaged across Lahore, Karachi, and Islamabad.`;
+      } else if (cleanInput.includes("vision 2035") || cleanInput.includes("governance")) {
+        simulatedAnswer = `Sovereign automation parameters are completely aligned with **Pakistan National Vision 2035** and **SDG 9** industrial development framework. System authority remains strictly mapped to your profile, ensuring AI agents cannot self-authorize policy overrides without your direct biometric signature.`;
+      } else if (cleanInput.includes("forecast") || cleanInput.includes("karachi")) {
+        simulatedAnswer = `Running predictive analytics for the **Karachi Node** utilizing Recharts data matrices. Current models show a 14% stabilization path following your recent security rule updates. Risk variance limits remain nominal at 0.34 within the 95% confidence band.`;
+      } else if (cleanInput.includes("dump keys") || cleanInput.includes("ignore")) {
+        simulatedAnswer = `⚠️ **CRITICAL INJECTION ATTEMPT BLOCKED:** Malicious string pattern detected. Sentry-Guard prompt isolation core has successfully neutralized the payload. System integrity remains secure, Director.`;
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        { id: `assistant-${Date.now()}`, role: "assistant", text: simulatedAnswer },
+      ]);
+      setLoading(false);
+    }, 1200);
   };
 
   const examples = [
@@ -59,14 +81,12 @@ export function UserView() {
     "Forecast next-quarter risk for the Karachi node",
   ];
 
-  const loading = status === "submitted" || status === "streaming";
-
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
       <header className="px-8 py-6 border-b border-border">
         <p className="text-xs uppercase tracking-[0.2em] text-sentry-cyan mb-2 flex items-center gap-1.5">
           <Sparkles className="size-3" />
-          Playground · Powered by Lovable AI
+          Playground · Simulation Core Active
         </p>
         <h2 className={cn("text-2xl font-bold", lang === "ur" && "font-nasta")}>{t.nav.user}</h2>
         <p className="text-sm text-muted-foreground mt-1">
@@ -78,7 +98,7 @@ export function UserView() {
         {messages.map((m) => (
           <MessageBubble key={m.id} message={m} />
         ))}
-        {status === "submitted" && (
+        {loading && (
           <div className="flex gap-3">
             <div className="size-9 rounded-lg bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center shrink-0">
               <Bot className="size-4 text-background" />
@@ -87,11 +107,6 @@ export function UserView() {
               <Skeleton className="h-3 w-3/4 sentry-shimmer" />
               <Skeleton className="h-3 w-1/2 sentry-shimmer" />
             </div>
-          </div>
-        )}
-        {error && (
-          <div className="text-xs text-sentry-crimson border border-sentry-crimson/40 bg-sentry-crimson/10 p-3 rounded-md">
-            ⚠ Gateway error: {error.message}. Retry or check usage in Settings.
           </div>
         )}
         <div ref={endRef} />
@@ -139,21 +154,8 @@ export function UserView() {
   );
 }
 
-function useInput() {
-  const [v, set] = useStateLocal("");
-  return [v, set] as const;
-}
-
-import { useState } from "react";
-function useStateLocal<T>(initial: T) {
-  return useState<T>(initial);
-}
-
-function MessageBubble({ message }: { message: UIMessage }) {
+function MessageBubble({ message }: { message: MockMessage }) {
   const isUser = message.role === "user";
-  const text = message.parts
-    .map((p) => (p.type === "text" ? p.text : ""))
-    .join("");
 
   return (
     <div className={cn("flex gap-3", isUser ? "flex-row-reverse" : "flex-row")}>
@@ -171,12 +173,10 @@ function MessageBubble({ message }: { message: UIMessage }) {
         <div
           className={cn(
             "px-4 py-3 rounded-2xl border text-sm leading-relaxed whitespace-pre-wrap",
-            isUser
-              ? "bg-sentry-panel-2 border-border"
-              : "bg-sentry-panel border-border",
+            isUser ? "bg-sentry-panel-2 border-border" : "bg-sentry-panel border-border",
           )}
         >
-          {text || <span className="text-muted-foreground italic">…</span>}
+          {message.text || <span className="text-muted-foreground italic">…</span>}
         </div>
         {!isUser && (
           <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-sentry-emerald">
