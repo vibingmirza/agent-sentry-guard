@@ -1,14 +1,8 @@
 import { Shield, MessageSquare, LayoutDashboard, FileBadge, BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useApp } from "./app-context";
 
 export type SentryView = "user" | "admin" | "client" | "analytics";
-
-const items: { id: SentryView; label: string; icon: typeof Shield; sub: string }[] = [
-  { id: "user", label: "AI Playground", icon: MessageSquare, sub: "User View" },
-  { id: "admin", label: "Safety Dashboard", icon: LayoutDashboard, sub: "Admin View" },
-  { id: "client", label: "Compliance Office", icon: FileBadge, sub: "Client View" },
-  { id: "analytics", label: "Analytics Insights", icon: BarChart3, sub: "Telemetry" },
-];
 
 export function SentrySidebar({
   active,
@@ -17,20 +11,26 @@ export function SentrySidebar({
   active: SentryView;
   onChange: (v: SentryView) => void;
 }) {
+  const { t, lang } = useApp();
+  const items: { id: SentryView; label: string; sub: string; icon: typeof Shield }[] = [
+    { id: "user", label: t.nav.user, sub: t.sub.user, icon: MessageSquare },
+    { id: "admin", label: t.nav.admin, sub: t.sub.admin, icon: LayoutDashboard },
+    { id: "client", label: t.nav.client, sub: t.sub.client, icon: FileBadge },
+    { id: "analytics", label: t.nav.analytics, sub: t.sub.analytics, icon: BarChart3 },
+  ];
+
   return (
     <aside className="sticky top-0 h-screen w-72 shrink-0 border-r border-border bg-sentry-panel/60 backdrop-blur-xl flex flex-col">
       <div className="p-6 border-b border-border">
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="size-10 rounded-lg bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center sentry-glow-cyan">
-              <Shield className="size-5 text-background" strokeWidth={2.5} />
-            </div>
+          <div className="size-10 rounded-lg bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center sentry-glow-cyan">
+            <Shield className="size-5 text-background" strokeWidth={2.5} />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight">Agent-Sentry</h1>
-            <p className="text-[10px] uppercase tracking-widest text-sentry-cyan">
-              Multi-Agent Governance
-            </p>
+            <h1 className={cn("text-lg font-bold tracking-tight", lang === "ur" && "font-nasta")}>
+              {t.appName}
+            </h1>
+            <p className="text-[10px] uppercase tracking-widest text-sentry-cyan">{t.tagline}</p>
           </div>
         </div>
       </div>
@@ -57,24 +57,24 @@ export function SentrySidebar({
                 )}
               />
               <div className="flex-1">
-                <div className="text-sm font-semibold">{it.label}</div>
-                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {it.sub}
+                <div className={cn("text-sm font-semibold nav-label", lang === "ur" && "font-nasta")}>
+                  {it.label}
                 </div>
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{it.sub}</div>
               </div>
             </button>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border space-y-2">
         <div className="rounded-lg bg-sentry-panel-2 p-3 border border-border">
           <div className="flex items-center gap-2 mb-1">
             <span className="size-2 rounded-full bg-sentry-emerald sentry-glow-emerald" />
             <span className="text-xs font-medium">All Systems Nominal</span>
           </div>
           <p className="text-[10px] text-muted-foreground leading-relaxed">
-            Aligned with SDG 9 & Pakistan Vision 2035
+            {t.directorName} · {t.director}
           </p>
         </div>
       </div>

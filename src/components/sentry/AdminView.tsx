@@ -14,6 +14,11 @@ import {
   Archive,
   CircleDot,
   X,
+  Eye,
+  Brain,
+  Lock,
+  Unlock,
+  BadgeCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   useAlerts,
   MOCK_INCIDENTS,
@@ -45,6 +51,7 @@ import {
   type ResolutionType,
   type AlertStatus,
 } from "./alerts-store";
+import { useApp } from "./app-context";
 
 const SEVERITIES: AlertSeverity[] = ["Critical", "High", "Medium", "Low"];
 const TYPES: IncidentType[] = ["Auth", "API", "Network"];
@@ -55,8 +62,10 @@ const RESOLUTION_TYPES: ResolutionType[] = [
 ];
 
 export function AdminView() {
-  const { active, archived, addAlert, setStatus, resolveAlert } = useAlerts();
+  const { active, archived, authorizedRules, addAlert, setStatus, resolveAlert, authorizeBlock, revokeAuthorization } = useAlerts();
+  const { t, lang } = useApp();
   const [killed, setKilled] = useState(false);
+  const [inspecting, setInspecting] = useState<Alert | null>(null);
 
   // Resolution dialog
   const [resolving, setResolving] = useState<Alert | null>(null);
@@ -180,13 +189,17 @@ export function AdminView() {
   };
 
   return (
+    <TooltipProvider delayDuration={150}>
     <div className="p-8 space-y-8 max-w-7xl mx-auto">
       <header className="flex items-end justify-between flex-wrap gap-4">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-sentry-cyan mb-2">Admin View</p>
-          <h2 className="text-2xl font-bold">Safety &amp; Infrastructure Dashboard</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Real-time multi-agent telemetry, audit logs, and emergency controls.
+          <h2 className={cn("text-2xl font-bold", lang === "ur" && "font-nasta")}>
+            Safety &amp; Infrastructure Dashboard
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+            <BadgeCheck className="size-4 text-sentry-cyan" />
+            Acting Authority: <span className="font-semibold text-foreground">{t.directorName}</span> · {t.director}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -353,11 +366,116 @@ export function AdminView() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <ActionButton status={log.status} onClick={() => cycleStatus(log)} />
+                      <div className="flex items-center justify-end gap-1.5">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setInspecting(log)}
+                              className="h-8 px-2 text-muted-foreground hover:text-sentry-cyan"
+                            >
+                              <Eye className="size-3.5" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>{t.inspect} · {t.chainOfThought}</TooltipContent>
+                        </Tooltip>
+                        {log.blocked && (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                size="sm"
+                                onClick={() => {
+                                  if (log.authorized) {
+                                    revokeAuthorization(log.id);
+                                    toast.info("Authorization revoked");
+                                  } else {
+                                    authorizeBlock(log.id);
+                                    toast.success("Block authorized → Active Security Rules");
+                                  }
+                                }}
+                                className={cn(
+                                  "h-8 px-2.5 text-xs font-bold uppercase tracking-wider",
+                                  log.authorized
+                                    ? "bg-sentry-emerald/20 border border-sentry-emerald/50 text-sentry-emerald"
+                                    : "bg-sentry-cyan/15 border border-sentry-cyan/50 text-sentry-cyan hover:bg-sentry-cyan/25",
+                                )}
+                              >
+                                {log.authorized ? <Lock className="size-3 mr-1" /> : <ShieldCheck className="size-3 mr-1" />}
+                                {log.authorized ? "Authorized" : t.authorize}
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              {log.authorized ? "Click to revoke security rule" : "Promote to persistent block rule"}
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                        <ActionButton status={log.status} onClick={() => cycleStatus(log)} />
+                      </div>
                     </td>
                   </tr>
                 );
               })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Active Security Rules */}
+      <section className="rounded-xl border border-sentry-emerald/40 bg-gradient-to-br from-sentry-emerald/5 to-transparent overflow-hidden">
+        <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+          <h3 className="font-semibold flex items-center gap-2">
+            <Lock className="size-4 text-sentry-emerald" /> {t.activeRules}
+          </h3>
+          <span className="text-[10px] uppercase tracking-widest text-sentry-emerald">
+            {authorizedRules.length} enforced · persistent
+          </span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-sentry-panel-2/60 text-[10px] uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="text-left px-6 py-3 font-medium">Rule</th>
+                <th className="text-left px-6 py-3 font-medium">Severity</th>
+                <th className="text-left px-6 py-3 font-medium">Agent</th>
+                <th className="text-left px-6 py-3 font-medium">Authorized</th>
+                <th className="text-right px-6 py-3 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {authorizedRules.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground text-sm">
+                    No security rules authorized yet. Click "Authorize" on a blocked threat to enforce it.
+                  </td>
+                </tr>
+              )}
+              {authorizedRules.map((rule) => (
+                <tr key={rule.id} className="border-t border-border">
+                  <td className="px-6 py-3 max-w-md">
+                    <p className="text-foreground line-clamp-1">{rule.prompt}</p>
+                    <p className="text-[10px] text-muted-foreground mt-1 font-mono">{rule.type} · {rule.ip}</p>
+                  </td>
+                  <td className="px-6 py-3"><SeverityBadge severity={rule.severity} blocked={rule.blocked} /></td>
+                  <td className="px-6 py-3"><code className="text-xs text-muted-foreground">{rule.agent}</code></td>
+                  <td className="px-6 py-3 text-xs text-muted-foreground">
+                    {rule.authorizedAt ? new Date(rule.authorizedAt).toLocaleString() : "—"}
+                  </td>
+                  <td className="px-6 py-3 text-right">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        revokeAuthorization(rule.id);
+                        toast.info("Rule revoked");
+                      }}
+                      className="text-muted-foreground hover:text-sentry-crimson"
+                    >
+                      <Unlock className="size-3.5 mr-1" /> Revoke
+                    </Button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -514,7 +632,39 @@ export function AdminView() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Inspect / Chain of Thought dialog */}
+      <Dialog open={!!inspecting} onOpenChange={(o) => !o && setInspecting(null)}>
+        <DialogContent className="bg-sentry-panel border-sentry-cyan/40 max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Brain className="size-5 text-sentry-cyan" />
+              {t.inspect} · {t.chainOfThought}
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Reasoning trace from Sentry-Guard Executive Intelligence.
+            </DialogDescription>
+          </DialogHeader>
+          {inspecting && (
+            <div className="space-y-3">
+              <div className="rounded-md border border-border bg-sentry-panel-2 p-3 text-sm">
+                <p className="text-foreground">{inspecting.prompt}</p>
+                <p className="text-[10px] text-muted-foreground mt-1 font-mono">
+                  {inspecting.type} · {inspecting.ip} · {inspecting.agent}
+                </p>
+              </div>
+              <pre className="font-mono-tech text-xs leading-relaxed whitespace-pre-wrap bg-black/40 border border-sentry-cyan/30 rounded-md p-4 text-sentry-cyan/90">
+{inspecting.chainOfThought}
+              </pre>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setInspecting(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
+    </TooltipProvider>
   );
 }
 
