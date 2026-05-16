@@ -14,6 +14,11 @@ import {
   Archive,
   CircleDot,
   X,
+  Eye,
+  Brain,
+  Lock,
+  Unlock,
+  BadgeCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   useAlerts,
   MOCK_INCIDENTS,
@@ -45,6 +51,7 @@ import {
   type ResolutionType,
   type AlertStatus,
 } from "./alerts-store";
+import { useApp } from "./app-context";
 
 const SEVERITIES: AlertSeverity[] = ["Critical", "High", "Medium", "Low"];
 const TYPES: IncidentType[] = ["Auth", "API", "Network"];
@@ -55,8 +62,10 @@ const RESOLUTION_TYPES: ResolutionType[] = [
 ];
 
 export function AdminView() {
-  const { active, archived, addAlert, setStatus, resolveAlert } = useAlerts();
+  const { active, archived, authorizedRules, addAlert, setStatus, resolveAlert, authorizeBlock, revokeAuthorization } = useAlerts();
+  const { t, lang } = useApp();
   const [killed, setKilled] = useState(false);
+  const [inspecting, setInspecting] = useState<Alert | null>(null);
 
   // Resolution dialog
   const [resolving, setResolving] = useState<Alert | null>(null);
