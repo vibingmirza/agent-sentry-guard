@@ -47,7 +47,8 @@ export function RegionMap() {
   );
 }
 
-function Pulse({ x, y, label }: Node) {
+function Pulse({ x, y, name }: Node) {
+  const label = name;
   return (
     <g>
       <circle cx={x} cy={y} r="12" className="fill-sentry-cyan/15">
