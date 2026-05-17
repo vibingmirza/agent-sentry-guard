@@ -1,8 +1,8 @@
-import { Shield, MessageSquare, LayoutDashboard, FileBadge, BarChart3 } from "lucide-react";
+import { Shield, MessageSquare, LayoutDashboard, FileBadge, BarChart3, Crosshair, Network } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "./app-context";
 
-export type SentryView = "user" | "admin" | "client" | "analytics";
+export type SentryView = "user" | "admin" | "client" | "analytics" | "warroom" | "federation";
 
 export function SentrySidebar({
   active,
@@ -17,6 +17,8 @@ export function SentrySidebar({
     { id: "admin", label: t.nav.admin, sub: t.sub.admin, icon: LayoutDashboard },
     { id: "client", label: t.nav.client, sub: t.sub.client, icon: FileBadge },
     { id: "analytics", label: t.nav.analytics, sub: t.sub.analytics, icon: BarChart3 },
+    { id: "warroom", label: t.nav.warroom, sub: t.sub.warroom, icon: Crosshair },
+    { id: "federation", label: t.nav.federation, sub: t.sub.federation, icon: Network },
   ];
 
   return (

@@ -5,6 +5,8 @@ import { UserView } from "@/components/sentry/UserView";
 import { AdminView } from "@/components/sentry/AdminView";
 import { ClientView } from "@/components/sentry/ClientView";
 import { AnalyticsView } from "@/components/sentry/AnalyticsView";
+import { WarRoom } from "@/components/sentry/WarRoom";
+import { FederationGrid } from "@/components/sentry/FederationGrid";
 import { AlertsProvider } from "@/components/sentry/alerts-store";
 import { AppProvider, useApp } from "@/components/sentry/app-context";
 import { Header } from "@/components/sentry/Header";
@@ -72,6 +74,8 @@ function Shell() {
                 <AnalyticsView />
               </div>
             )}
+            {view === "warroom" && <WarRoom />}
+            {view === "federation" && <FederationGrid />}
           </div>
           <RawAgentFeed />
         </main>
