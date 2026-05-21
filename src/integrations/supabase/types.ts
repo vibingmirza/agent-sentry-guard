@@ -14,7 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agent_logs: {
+        Row: {
+          agent_name: string
+          created_at: string
+          id: string
+          location: string
+          status: string
+          tokens_used: number
+        }
+        Insert: {
+          agent_name: string
+          created_at?: string
+          id?: string
+          location: string
+          status: string
+          tokens_used?: number
+        }
+        Update: {
+          agent_name?: string
+          created_at?: string
+          id?: string
+          location?: string
+          status?: string
+          tokens_used?: number
+        }
+        Relationships: []
+      }
+      audit_log: {
+        Row: {
+          actor: string | null
+          category: string
+          created_at: string
+          event: string
+          id: string
+        }
+        Insert: {
+          actor?: string | null
+          category?: string
+          created_at?: string
+          event: string
+          id?: string
+        }
+        Update: {
+          actor?: string | null
+          category?: string
+          created_at?: string
+          event?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      system_config: {
+        Row: {
+          id: number
+          is_system_locked: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          is_system_locked?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          is_system_locked?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
