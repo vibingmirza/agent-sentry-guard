@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, Fingerprint, Loader2 } from "lucide-react";
+import { Shield, Fingerprint, Loader2, Sparkles } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { useApp } from "./app-context";
 
 export function LoginModal() {
   const { session, login, t } = useApp();
+  const [guestLoading, setGuestLoading] = useState(false);
   const [username, setUsername] = useState("Mirza Faizan Baig");
   const [password, setPassword] = useState("••••••••••");
   const [busy, setBusy] = useState(false);
