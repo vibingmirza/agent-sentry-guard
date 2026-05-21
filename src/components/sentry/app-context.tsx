@@ -131,9 +131,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       setScanning(false);
       setLockdown(true);
+      // Persist global lockdown state to the database
+      fetch("/api/public/lockdown", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ locked: true, actor: session?.username ?? "operator" }),
+      }).catch(() => {});
     }, 2000);
   };
-  const releaseLockdown = () => setLockdown(false);
+  const releaseLockdown = () => {
+    setLockdown(false);
+    fetch("/api/public/lockdown", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locked: false, actor: session?.username ?? "operator" }),
+    }).catch(() => {});
+  };
 
   const monitoringSeconds = Math.max(0, Math.floor((now - sessionStartedAt) / 1000));
   const computeCost = (monitoringSeconds / 3600) * 5.0;

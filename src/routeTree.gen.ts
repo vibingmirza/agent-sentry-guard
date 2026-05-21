@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiPublicStatusRouteImport } from './routes/api/public/status'
+import { Route as ApiPublicLogsRouteImport } from './routes/api/public/logs'
+import { Route as ApiPublicLockdownRouteImport } from './routes/api/public/lockdown'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +25,74 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicStatusRoute = ApiPublicStatusRouteImport.update({
+  id: '/api/public/status',
+  path: '/api/public/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicLogsRoute = ApiPublicLogsRouteImport.update({
+  id: '/api/public/logs',
+  path: '/api/public/logs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicLockdownRoute = ApiPublicLockdownRouteImport.update({
+  id: '/api/public/lockdown',
+  path: '/api/public/lockdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/public/lockdown': typeof ApiPublicLockdownRoute
+  '/api/public/logs': typeof ApiPublicLogsRoute
+  '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/public/lockdown': typeof ApiPublicLockdownRoute
+  '/api/public/logs': typeof ApiPublicLogsRoute
+  '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/public/lockdown': typeof ApiPublicLockdownRoute
+  '/api/public/logs': typeof ApiPublicLogsRoute
+  '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/api/chat'
+    | '/api/public/lockdown'
+    | '/api/public/logs'
+    | '/api/public/status'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat'
-  id: '__root__' | '/' | '/api/chat'
+  to:
+    | '/'
+    | '/api/chat'
+    | '/api/public/lockdown'
+    | '/api/public/logs'
+    | '/api/public/status'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/chat'
+    | '/api/public/lockdown'
+    | '/api/public/logs'
+    | '/api/public/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiPublicLockdownRoute: typeof ApiPublicLockdownRoute
+  ApiPublicLogsRoute: typeof ApiPublicLogsRoute
+  ApiPublicStatusRoute: typeof ApiPublicStatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +111,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/status': {
+      id: '/api/public/status'
+      path: '/api/public/status'
+      fullPath: '/api/public/status'
+      preLoaderRoute: typeof ApiPublicStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/logs': {
+      id: '/api/public/logs'
+      path: '/api/public/logs'
+      fullPath: '/api/public/logs'
+      preLoaderRoute: typeof ApiPublicLogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/lockdown': {
+      id: '/api/public/lockdown'
+      path: '/api/public/lockdown'
+      fullPath: '/api/public/lockdown'
+      preLoaderRoute: typeof ApiPublicLockdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiPublicLockdownRoute: ApiPublicLockdownRoute,
+  ApiPublicLogsRoute: ApiPublicLogsRoute,
+  ApiPublicStatusRoute: ApiPublicStatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
