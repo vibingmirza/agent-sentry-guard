@@ -74,6 +74,38 @@ export function LoginModal() {
             Authorized for Director {t.directorName}, {t.director}.
           </p>
         </form>
+
+        <div className="relative my-2">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-[10px] uppercase tracking-widest">
+            <span className="bg-sentry-panel px-2 text-muted-foreground">or</span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          onClick={() => {
+            setGuestLoading(true);
+            setTimeout(() => {
+              login("Guest Executive");
+              setGuestLoading(false);
+            }, 400);
+          }}
+          disabled={guestLoading}
+          className="w-full h-12 bg-gradient-to-r from-sentry-emerald to-sentry-cyan text-background hover:opacity-90 sentry-glow-emerald font-bold uppercase tracking-wider"
+        >
+          {guestLoading ? (
+            <Loader2 className="size-4 mr-2 animate-spin" />
+          ) : (
+            <Sparkles className="size-4 mr-2" />
+          )}
+          Explore Guest Demo
+        </Button>
+        <p className="text-[10px] text-center text-muted-foreground">
+          Instant access · realistic seeded data · no account required
+        </p>
       </DialogContent>
     </Dialog>
   );
