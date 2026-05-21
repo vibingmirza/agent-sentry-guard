@@ -7,8 +7,12 @@ import { ClientView } from "@/components/sentry/ClientView";
 import { AnalyticsView } from "@/components/sentry/AnalyticsView";
 import { WarRoom } from "@/components/sentry/WarRoom";
 import { FederationGrid } from "@/components/sentry/FederationGrid";
+import { DeveloperView } from "@/components/sentry/DeveloperView";
+import { AuditTrail } from "@/components/sentry/AuditTrail";
+import { WorkspaceBar } from "@/components/sentry/WorkspaceBar";
 import { AlertsProvider } from "@/components/sentry/alerts-store";
 import { AppProvider, useApp } from "@/components/sentry/app-context";
+import { DevProvider } from "@/components/sentry/dev-store";
 import { Header } from "@/components/sentry/Header";
 import { LoginModal } from "@/components/sentry/LoginModal";
 import { BiometricLockdown } from "@/components/sentry/BiometricLockdown";
@@ -34,9 +38,11 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <AppProvider>
-      <AlertsProvider>
-        <Shell />
-      </AlertsProvider>
+      <DevProvider>
+        <AlertsProvider>
+          <Shell />
+        </AlertsProvider>
+      </DevProvider>
     </AppProvider>
   );
 }
@@ -53,6 +59,7 @@ function Shell() {
         <SentrySidebar active={view} onChange={setView} />
         <main className="flex-1 min-w-0 flex flex-col">
           <Header />
+          <WorkspaceBar />
           <div className="flex-1 min-w-0 flex flex-col">
             {view === "user" && <UserView />}
             {view === "admin" && (
@@ -76,6 +83,8 @@ function Shell() {
             )}
             {view === "warroom" && <WarRoom />}
             {view === "federation" && <FederationGrid />}
+            {view === "developer" && <DeveloperView />}
+            <AuditTrail />
           </div>
           <RawAgentFeed />
         </main>
