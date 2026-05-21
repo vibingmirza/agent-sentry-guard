@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, Fingerprint, Loader2, Sparkles } from "lucide-react";
+import { Shield, Fingerprint, Loader2, Sparkles, AlertTriangle } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,16 +8,29 @@ import { useApp } from "./app-context";
 export function LoginModal() {
   const { session, login, t } = useApp();
   const [guestLoading, setGuestLoading] = useState(false);
-  const [username, setUsername] = useState("Mirza Faizan Baig");
-  const [password, setPassword] = useState("••••••••••");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!username.trim() || !password.trim()) return;
+    setError("");
+    
+    const targetUser = username.trim();
+    const targetPass = password.trim();
+
+    if (!targetUser || !targetPass) return;
+    
     setBusy(true);
+    
     setTimeout(() => {
-      login(username.trim());
+      // SECURE CREDENTIAL CHECK:
+      if (targetUser.toLowerCase() === "mirzafaizan" && targetPass === "sovereign_guard_2026") {
+        login("Director Mirza Faizan Baig");
+      } else {
+        setError("ACCESS DENIED: Invalid Director Credentials.");
+      }
       setBusy(false);
     }, 900);
   };
@@ -40,9 +53,17 @@ export function LoginModal() {
         </DialogDescription>
 
         <form onSubmit={submit} className="mt-4 space-y-3">
+          {error && (
+            <div className="flex items-center gap-2 p-3 text-xs rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 animate-pulse">
+              <AlertTriangle className="size-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
           <div className="space-y-1.5">
             <label className="text-[10px] uppercase tracking-wider text-muted-foreground">{t.username}</label>
             <Input
+              placeholder="Enter Director Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="bg-sentry-panel-2 border-border h-11"
@@ -53,6 +74,7 @@ export function LoginModal() {
             <label className="text-[10px] uppercase tracking-wider text-muted-foreground">{t.password}</label>
             <Input
               type="password"
+              placeholder="••••••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-sentry-panel-2 border-border h-11"
