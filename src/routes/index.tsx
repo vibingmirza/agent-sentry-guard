@@ -68,7 +68,7 @@ const VERTICAL_DETAILS: Record<string, PathwayDetails> = {
   },
   "Accounting Firms": {
     title: "Automated Ledger Intelligence",
-    subtitle: "Continuous Multi-Ledger Auditing",
+    subtitle: "Continuous Multi-Ledger Audisting",
     description: "Orchestrate specialized AI agents to cross-examine ledgers, process 1099 tracking, and continuously validate corporate accounting workpapers.",
     metrics: [
       { label: "Reconciliation Error", val: "0.00%" },
@@ -581,10 +581,10 @@ function SaaSInterfacePanel({ onBookBriefing }: { onBookBriefing: () => void }) 
             </div>
             <div className="rounded-lg bg-black p-4 font-mono text-xs text-zinc-400 space-y-2 max-h-[260px] overflow-y-auto border border-white/5 leading-relaxed">
               <div className="text-zinc-600">[00:14:02] BLOCK #14807 Signed · Hash: 8f3c...2a19 · Sequencer index: 294</div>
-              <div className="text-cyan-300">[00:14:15] Outbound Request: LegalDoc-Automator -> call: openai/gpt-4o</div>
+              <div className="text-cyan-300">[00:14:15] Outbound Request: LegalDoc-Automator &rarr; call: openai/gpt-4o</div>
               <div className="text-emerald-400">[00:14:16] Gateway signed receipt payload context verified successfully.</div>
               <div className="text-zinc-600">[00:18:44] BLOCK #14808 Signed · Hash: 49ab...ee41 · Sequencer index: 295</div>
-              <div className="text-cyan-300">[00:19:02] Outbound Request: EComFraud-Response-Unit -> call: anthropic/claude-3-opus</div>
+              <div className="text-cyan-300">[00:19:02] Outbound Request: EComFraud-Response-Unit &rarr; call: anthropic/claude-3-opus</div>
               <div className="text-red-400 font-semibold">[00:19:03] 🛑 INTERCEPT: Outbound tokens exceeded budget parameter profile rule. Request Terminated.</div>
               {isBudgetBreached && (
                 <div className="text-rose-400 font-semibold animate-in fade-in duration-300">[00:23:11] ⚠️ POLICY SHIELD EXECUTED: Realtime master dynamic configuration allocation baseline breached. Intercept lines active.</div>
@@ -786,7 +786,7 @@ function Services({ onContact, onSelectPathway }: { onContact: () => void; onSel
             onClick={() => onSelectPathway(name)}
             className="rounded-lg border border-white/5 bg-white/5 px-4 py-3 text-sm font-semibold text-white hover:bg-white/10 hover:border-emerald-400/40 transition-all"
           >
-            {name} Fleet Layout →
+            {name} Fleet Layout &rarr;
           </button>
         ))}
       </div>
