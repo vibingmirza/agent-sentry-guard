@@ -40,12 +40,95 @@ const WORKER_KEY = "SentryShield_Master_Secure_2026_Prod";
 
 type Lang = "EN" | "ES" | "PT";
 
+interface PathwayDetails {
+  title: string;
+  subtitle: string;
+  description: string;
+  metrics: { label: string; val: string }[];
+  useCases: string[];
+}
+
+const VERTICAL_DETAILS: Record<string, PathwayDetails> = {
+  "Law Firms": {
+    title: "Legal Fleet Operations",
+    subtitle: "ABA Op. 512 & Circular 230 Grade Isolation",
+    description: "Automate high-latency matter follow-ups, cross-domain discovery tracking, and court deadline schedules within a fully isolated zero-data-plane system.",
+    metrics: [
+      { label: "Drafting Latency", val: "-82%" },
+      { label: "Audit Readiness", val: "100%" }
+    ],
+    useCases: [
+      "Automated cross-domain production tracking",
+      "Tamper-proof discovery intake compilation",
+      "Provisional chain-of-custody verification logging"
+    ]
+  },
+  "Accounting Firms": {
+    title: "Automated Ledger Intelligence",
+    subtitle: "Multi-Ledger Compliance Systems",
+    description: "Orchestrate custom agent fleets dedicated to continuous multi-ledger reconciliation, 1099 automated compliance audits, and real-time digital workpaper cross-checks.",
+    metrics: [
+      { label: "Reconciliation Error", val: "0.00%" },
+      { label: "Processing Speed", val: "14x" }
+    ],
+    useCases: [
+      "Real-time transactional balance verification",
+      "Automated tax package structure matching",
+      "Cryptographically signed internal expense auditing"
+    ]
+  },
+  "Insurance Agencies": {
+    title: "High-Retention Carrier Engines",
+    subtitle: "Instant Underwriting Loops & COI Processing",
+    description: "Execute immediate multi-channel underwriting data collection, structural certificate of insurance verification loops, and autonomous account renewal triggers.",
+    metrics: [
+      { label: "Time-to-Quote", val: "< 30s" },
+      { label: "Retention Floor", val: "+19%" }
+    ],
+    useCases: [
+      "Dynamic data collection parsing from legacy PDFs",
+      "Autonomous policy matching verification loops",
+      "Proactive churn alert risk tracking pipelines"
+    ]
+  },
+  "Real Estate": {
+    title: "Autonomous Asset Matching",
+    subtitle: "Multi-Channel Enrichment & Property Processing",
+    description: "Ingest and structure raw property records, parse unstructured MLS listings, track regional asset valuations, and automate corporate owner reporting blocks.",
+    metrics: [
+      { label: "Enrichment Depth", val: "5x" },
+      { label: "Reporting Overhead", val: "-70%" }
+    ],
+    useCases: [
+      "Multi-channel property lead parameter parsing",
+      "Automated lease abstract synthesis engines",
+      "Dynamic portfolio statement rendering queues"
+    ]
+  },
+  "E-Commerce": {
+    title: "Chargeback Settlement Units",
+    subtitle: "Automated Evidence Engine & Refund Audits",
+    description: "Protect margins with automated structural fraud audits, real-time programmatic supply chain verification, and instantaneous evidence package construction.",
+    metrics: [
+      { label: "Dispute Win Rate", val: "74%" },
+      { label: "Manual Review Needed", val: "-91%" }
+    ],
+    useCases: [
+      "Dynamic cross-platform shipping tracking confirmation",
+      "Automated chargeback response assembly",
+      "High-risk order velocity threat assessment"
+    ]
+  }
+};
+
 /* =========================================================================
    LANDING PAGE
    ========================================================================= */
 
 function AgentGuardLanding() {
   const [demoOpen, setDemoOpen] = useState(false);
+  const [selectedPathway, setSelectedPathway] = useState<PathwayDetails | null>(null);
+
   const openDemo = () => setDemoOpen(true);
   const closeDemo = () => setDemoOpen(false);
 
@@ -55,12 +138,22 @@ function AgentGuardLanding() {
       <Navbar onBookDemo={openDemo} />
       <main className="relative z-10">
         <Hero onBookDemo={openDemo} />
-        <Services onContact={openDemo} />
+        <Services 
+          onContact={openDemo} 
+          onSelectPathway={(verticalName) => setSelectedPathway(VERTICAL_DETAILS[verticalName] || null)} 
+        />
         <Guardrails />
         <Runtime />
       </main>
       <Footer />
       {demoOpen && <DemoModal onClose={closeDemo} />}
+      {selectedPathway && (
+        <PathwayModal 
+          pathway={selectedPathway} 
+          onClose={() => setSelectedPathway(null)} 
+          onBook={openDemo}
+        />
+      )}
     </div>
   );
 }
@@ -96,7 +189,6 @@ function Navbar({ onBookDemo }: { onBookDemo: () => void }) {
   return (
     <header className="sticky top-0 z-40 border-b border-white/5 bg-[#07090c]/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center gap-6 px-6 py-4">
-        {/* Brand + language */}
         <div className="flex items-center gap-4">
           <a href="#" className="font-mono text-base font-bold tracking-tight text-white">
             AgentGuard<span className="text-emerald-400">™</span>
@@ -119,7 +211,6 @@ function Navbar({ onBookDemo }: { onBookDemo: () => void }) {
           </div>
         </div>
 
-        {/* Center anchors */}
         <nav className="mx-auto hidden items-center gap-7 text-sm text-zinc-400 md:flex">
           {[
             ["Outcomes", "outcomes"],
@@ -138,7 +229,6 @@ function Navbar({ onBookDemo }: { onBookDemo: () => void }) {
           ))}
         </nav>
 
-        {/* Right: socials */}
         <div className="ml-auto flex items-center gap-1">
           <IconLink href={GITHUB_URL} label="GitHub">
             <Github className="h-4 w-4" />
@@ -151,7 +241,6 @@ function Navbar({ onBookDemo }: { onBookDemo: () => void }) {
           </IconLink>
         </div>
 
-        {/* CTA — visually separated */}
         <div className="ml-3 border-l border-white/10 pl-3">
           <button
             onClick={onBookDemo}
@@ -342,7 +431,6 @@ function FirewallEmulator() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Left input */}
         <div className="space-y-3 border-b border-white/5 p-5 lg:border-b-0 lg:border-r">
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-500">
             <Terminal className="h-3.5 w-3.5" /> request_builder.ts
@@ -380,7 +468,6 @@ function FirewallEmulator() {
           </div>
         </div>
 
-        {/* Right console */}
         <div className="flex flex-col bg-[#05070a]">
           <div className="flex items-center gap-2 border-b border-white/5 px-5 py-2.5 text-xs font-mono text-zinc-500">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
@@ -420,7 +507,6 @@ function lineColor(k: LogLine["kind"]) {
   }
 }
 
-/* Luhn detector — finds 13-19 digit sequences (allowing spaces/dashes) and validates */
 function detectCardLuhn(text: string): boolean {
   const matches = text.match(/(?:\d[ -]?){12,18}\d/g);
   if (!matches) return false;
@@ -431,6 +517,7 @@ function detectCardLuhn(text: string): boolean {
   }
   return false;
 }
+
 function luhnValid(num: string): boolean {
   let sum = 0;
   let alt = false;
@@ -450,7 +537,13 @@ function luhnValid(num: string): boolean {
    SERVICES GRID
    ========================================================================= */
 
-function Services({ onContact }: { onContact: () => void }) {
+function Services({ 
+  onContact, 
+  onSelectPathway 
+}: { 
+  onContact: () => void; 
+  onSelectPathway: (verticalName: string) => void;
+}) {
   const cards = [
     {
       title: "Law Firms",
@@ -488,10 +581,14 @@ function Services({ onContact }: { onContact: () => void }) {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
-            <ServiceCard key={c.title} title={c.title} desc={c.desc} />
+            <ServiceCard 
+              key={c.title} 
+              title={c.title} 
+              desc={c.desc} 
+              onClick={() => onSelectPathway(c.title)}
+            />
           ))}
 
-          {/* Custom card */}
           <div className="group relative overflow-hidden rounded-xl border border-emerald-400/40 bg-gradient-to-br from-emerald-400/10 via-[#0a0d12] to-cyan-400/10 p-6 shadow-[0_0_40px_-12px_rgba(16,185,129,0.45)] transition-all">
             <div className="absolute inset-0 -z-10 opacity-0 transition-opacity group-hover:opacity-100">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.18),transparent_60%)]" />
@@ -530,9 +627,12 @@ function Services({ onContact }: { onContact: () => void }) {
   );
 }
 
-function ServiceCard({ title, desc }: { title: string; desc: string }) {
+function ServiceCard({ title, desc, onClick }: { title: string; desc: string; onClick: () => void }) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-[#0a0d12] p-6 transition-all hover:-translate-y-0.5 hover:border-emerald-400/30 hover:bg-[#0d1218]">
+    <div 
+      onClick={onClick}
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-[#0a0d12] p-6 transition-all hover:-translate-y-0.5 hover:border-emerald-400/30 hover:bg-[#0d1218]"
+    >
       <div className="flex items-center gap-2 text-zinc-500">
         <ShieldCheck className="h-4 w-4" />
         <span className="font-mono text-[11px] uppercase tracking-widest">Vertical</span>
@@ -761,6 +861,8 @@ function DemoModal({ onClose }: { onClose: () => void }) {
     [form.name, form.email],
   );
 
+  const fieldCls = "w-full rounded-md border border-white/10 bg-black/50 px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:border-emerald-400/40 focus:outline-none focus:ring-1 focus:ring-emerald-400/30";
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div
@@ -832,54 +934,50 @@ function DemoModal({ onClose }: { onClose: () => void }) {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className={fieldCls}
-                  placeholder="jane@firm.com"
+                  placeholder="jane@company.com"
                 />
               </Field>
-              <Field label="Target Vertical">
+              <Field label="Target Vertical Deployment" className="md:col-span-1">
                 <select
                   value={form.vertical}
                   onChange={(e) => setForm({ ...form, vertical: e.target.value })}
                   className={fieldCls}
                 >
-                  {["Law", "Accounting", "Insurance", "E-Commerce", "Custom"].map((v) => (
-                    <option key={v} value={v}>
-                      {v}
-                    </option>
-                  ))}
+                  <option>Law</option>
+                  <option>Accounting</option>
+                  <option>Insurance</option>
+                  <option>Real Estate</option>
+                  <option>E-Commerce</option>
+                  <option>Custom Enterprise Vertical</option>
                 </select>
               </Field>
-              <Field label="Estimated Budget Tier">
+              <Field label="Estimated Automation Budget" className="md:col-span-1">
                 <select
                   value={form.budget}
                   onChange={(e) => setForm({ ...form, budget: e.target.value })}
                   className={fieldCls}
                 >
-                  {["$10k – $50k", "$50k – $250k", "$250k – $1M", "$1M+"].map((v) => (
-                    <option key={v} value={v}>
-                      {v}
-                    </option>
-                  ))}
+                  <option>$10k – $50k</option>
+                  <option>$50k – $200k</option>
+                  <option>$200k+</option>
                 </select>
               </Field>
-              <Field label="Workflow Bottlenecks" className="md:col-span-2">
+              <Field label="Describe Current Human Latency / Bottlenecks" className="md:col-span-2">
                 <textarea
                   value={form.bottlenecks}
                   onChange={(e) => setForm({ ...form, bottlenecks: e.target.value })}
-                  rows={4}
-                  className={fieldCls + " resize-none"}
-                  placeholder="Describe the workflows you want automated and the controls you need…"
+                  rows={3}
+                  className={`${fieldCls} resize-none`}
+                  placeholder="Where do manual bottlenecks slow down your processes?"
                 />
               </Field>
-              <div className="md:col-span-2 flex items-center justify-between gap-3 pt-2">
-                <p className="text-[11px] text-zinc-500">
-                  By submitting, you agree to receive a briefing call within 1 business hour.
-                </p>
+              <div className="mt-2 md:col-span-2">
                 <button
                   type="submit"
                   disabled={!valid}
-                  className="inline-flex items-center gap-2 rounded-md bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-emerald-300 disabled:opacity-40"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-emerald-400 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-emerald-300 disabled:opacity-40"
                 >
-                  Submit posture profile <ArrowRight className="h-4 w-4" />
+                  Submit Briefing Request <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
             </form>
@@ -890,45 +988,133 @@ function DemoModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-const fieldCls =
-  "w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-emerald-400/40 focus:outline-none focus:ring-1 focus:ring-emerald-400/30";
-
-function Field({
-  label,
-  className,
-  children,
-}: {
-  label: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) {
   return (
-    <label className={"block " + (className ?? "")}>
-      <span className="mb-1.5 block font-mono text-[11px] uppercase tracking-widest text-zinc-500">
-        {label}
-      </span>
+    <div className={`space-y-1.5 ${className ?? ""}`}>
+      <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-500">{label}</label>
       {children}
-    </label>
+    </div>
   );
 }
 
 function SuccessState({ onClose }: { onClose: () => void }) {
   return (
-    <div className="py-10 text-center">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400/15 ring-1 ring-emerald-400/30">
-        <Check className="h-7 w-7 text-emerald-400" />
+    <div className="py-8 text-center">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/10 text-emerald-400">
+        <Check className="h-6 w-6" />
       </div>
-      <h4 className="mt-5 text-xl font-semibold text-white">Thank you.</h4>
-      <p className="mx-auto mt-2 max-w-md text-sm text-zinc-400">
-        Our intake engineering team has received your posture profile. We will reach out within 1
-        business hour.
+      <h4 className="mt-4 text-lg font-semibold text-white">Briefing Requested Successfully</h4>
+      <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-400">
+        Our architecture team will audit your structural requirements and follow up within 4 hours.
       </p>
       <button
         onClick={onClose}
-        className="mt-6 inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-100 hover:bg-white/10"
+        className="mt-6 inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-200 transition-colors hover:bg-white/10"
       >
-        Close
+        Close Window
       </button>
+    </div>
+  );
+}
+
+/* =========================================================================
+   PATHWAY MODAL (NEW COMPONENT)
+   ========================================================================= */
+
+function PathwayModal({ 
+  pathway, 
+  onClose,
+  onBook
+}: { 
+  pathway: PathwayDetails; 
+  onClose: () => void;
+  onBook: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div
+        onClick={onClose}
+        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        aria-hidden
+      />
+      <div className="relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#0a0d12] shadow-2xl">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-md border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:bg-white/10"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <div className="border-b border-white/5 bg-white/[0.02] px-6 py-5">
+          <span className="font-mono text-xs uppercase tracking-widest text-emerald-400">
+            {pathway.subtitle}
+          </span>
+          <h3 className="mt-1 text-2xl font-semibold text-white">{pathway.title}</h3>
+        </div>
+
+        <div className="p-6 space-y-6">
+          <p className="text-zinc-400 text-sm leading-relaxed">
+            {pathway.description}
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 rounded-xl bg-black/30 p-4 border border-white/5">
+            {pathway.metrics.map((m, idx) => (
+              <div key={idx} className="text-center md:text-left">
+                <div className="text-2xl font-bold tracking-tight text-emerald-300 font-mono">
+                  {m.val}
+                </div>
+                <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider mt-0.5">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-2.5">
+            <h4 className="font-mono text-xs uppercase tracking-wider text-zinc-400 font-semibold">
+              Primary Autonomous Use Cases
+            </h4>
+            <ul className="space-y-2">
+              {pathway.useCases.map((uc, idx) => (
+                <li key={idx} className="flex items-start gap-2.5 text-sm text-zinc-300">
+                  <Check className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>{uc}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="pt-2 flex gap-3">
+            <button
+              onClick={() => {
+                onClose();
+                onBook();
+              }}
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-md bg-emerald-400 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-emerald-300"
+            >
+              Deploy This Fleet Blueprint <ArrowRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={onClose}
+              className="px-4 py-2.5 text-sm font-medium text-zinc-400 hover:text-white transition-colors"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
