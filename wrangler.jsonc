@@ -1,6 +1,8 @@
-name = "agent-sentry-guard"
-compatibility_date = "2024-11-01"
-pages_build_output_dir = "dist"
-
-[build]
-command = "npm run build"
+{
+  "name": "agent-sentry-guard",
+  "compatibility_date": "2024-11-01",
+  "pages_build_output_dir": "dist",
+  "build": {
+    "command": "npm run build"
+  }
+}
