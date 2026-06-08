@@ -1,5 +1,5 @@
 {
-  "name": "agentsentryguard",
+  "name": "agent-sentry-guard",
   "compatibility_date": "2025-01-01",
   "compatibility_flags": ["nodejs_compat"],
   "main": "dist/server/server.js",
