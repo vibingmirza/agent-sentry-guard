@@ -1,15 +1,9 @@
 {
   "name": "agentsentryguard",
   "compatibility_date": "2024-11-01",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
-  "main": ".output/server/index.mjs",
+  "main": "index.html",
   "assets": {
-    "directory": ".output/public",
+    "directory": "./dist",
     "binding": "ASSETS"
-  },
-  "observability": {
-    "enabled": true
   }
 }
