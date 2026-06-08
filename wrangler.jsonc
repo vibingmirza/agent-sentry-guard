@@ -1,5 +1,5 @@
 {
-  "name": "agent-sentry-guard",
+  "name": "agentsentryguard",
   "compatibility_date": "2024-11-01",
   "main": "index.html",
   "assets": {
