@@ -10,6 +10,14 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
 export default defineConfig({
   tanstackStart: {
-    server: { entry: "server" },
+    server: { 
+      entry: "server",
+    },
   },
+  vite: {
+    // This passes the preset down directly to the underlying Nitro engine running inside Vinxi
+    nitro: {
+      preset: "cloudflare-worker"
+    }
+  }
 });
