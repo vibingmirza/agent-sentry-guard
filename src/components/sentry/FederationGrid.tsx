@@ -142,9 +142,9 @@ export function FederationGrid() {
   }, [rotationAt, broadcasts]);
 
   return (
-    <div className="p-8 space-y-6">
-      <header className="flex items-end justify-between gap-4 flex-wrap">
-        <div>
+    <div className="space-y-6 p-4 md:p-8">
+      <header className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--war-purple)]">
             Sovereign Federation Grid
           </div>
@@ -161,8 +161,8 @@ export function FederationGrid() {
       </header>
 
       {/* Alliance grid map */}
-      <section className="war-panel p-5">
-        <div className="flex items-center justify-between mb-3">
+      <section className="war-panel p-4 md:p-5">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 mb-3">
           <div className="flex items-center gap-2">
             <Globe2 className="size-4 text-[color:var(--war-cyan)]" />
             <h3 className="text-sm font-semibold">Federated Alliance Node Network</h3>
@@ -180,8 +180,8 @@ export function FederationGrid() {
             const t = telemetry.find((x) => x.id === n.id)!;
             return (
               <div key={n.id} className="war-tile p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+                  <div className="min-w-0">
                     <div className="text-[10px] uppercase tracking-widest text-[color:var(--war-purple)]">
                       {n.region}
                     </div>
@@ -218,8 +218,8 @@ export function FederationGrid() {
 
       {/* CTSN + KMS */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="war-panel p-5 lg:col-span-2">
-          <div className="flex items-center justify-between mb-3">
+        <div className="war-panel p-4 md:p-5 lg:col-span-2">
+          <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center mb-3">
             <div className="flex items-center gap-2">
               <Radio className="size-4 text-[color:var(--war-cyan)]" />
               <h3 className="text-sm font-semibold">Federation Intelligence Broadcast (CTSN)</h3>
@@ -227,7 +227,7 @@ export function FederationGrid() {
             <Button
               onClick={broadcast}
               disabled={broadcasting}
-              className="bg-[color:var(--war-purple)] text-background hover:bg-[color:var(--war-purple)]/85"
+              className="h-auto min-h-10 w-full whitespace-normal bg-[color:var(--war-purple)] py-2 text-background hover:bg-[color:var(--war-purple)]/85 sm:w-auto"
             >
               <Radio className="size-4" />
               {broadcasting ? "Broadcasting…" : "Broadcast Anonymized Signature"}
@@ -274,7 +274,7 @@ export function FederationGrid() {
           </div>
         </div>
 
-        <div className="war-panel p-5 space-y-4">
+        <div className="war-panel space-y-4 p-4 md:p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <KeyRound className="size-4 text-[color:var(--war-purple)]" />
@@ -354,12 +354,12 @@ function KmsRow({
   detail: string;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-md border border-border bg-background/40 p-3">
-      <div className="flex items-center gap-3">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-border bg-background/40 p-3">
+      <div className="flex min-w-0 items-center gap-3">
         <span className="size-8 grid place-items-center rounded border border-[color:var(--war-purple)]/40 bg-[color:var(--war-purple)]/10">
           <Icon className="size-4 text-[color:var(--war-purple)]" />
         </span>
-        <div>
+        <div className="min-w-0">
           <div className="text-sm font-medium">{label}</div>
           <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{detail}</div>
         </div>

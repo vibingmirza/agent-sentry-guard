@@ -1,4 +1,5 @@
-import { Shield, MessageSquare, LayoutDashboard, FileBadge, BarChart3, Crosshair, Network, Code2 } from "lucide-react";
+import { Shield, MessageSquare, LayoutDashboard, FileBadge, BarChart3, Crosshair, Network, Code2, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useApp } from "./app-context";
 
@@ -7,9 +8,13 @@ export type SentryView = "user" | "admin" | "client" | "analytics" | "warroom" |
 export function SentrySidebar({
   active,
   onChange,
+  mobileOpen = false,
+  onMobileClose,
 }: {
   active: SentryView;
   onChange: (v: SentryView) => void;
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }) {
   const { t, lang } = useApp();
   const items: { id: SentryView; label: string; sub: string; icon: typeof Shield }[] = [
@@ -22,19 +27,43 @@ export function SentrySidebar({
     { id: "developer", label: "Developer API", sub: "Ingest & Sandbox", icon: Code2 },
   ];
 
+  const chooseView = (id: SentryView) => {
+    onChange(id);
+    onMobileClose?.();
+  };
+
   return (
-    <aside className="sticky top-0 h-screen w-72 shrink-0 border-r border-border bg-sentry-panel/60 backdrop-blur-xl flex flex-col">
+    <>
+      {mobileOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation"
+          className="fixed inset-0 z-50 bg-background/70 backdrop-blur-sm md:hidden"
+          onClick={onMobileClose}
+        />
+      )}
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-[60] flex h-dvh w-[min(18rem,88vw)] shrink-0 flex-col border-r border-border bg-sentry-panel/95 backdrop-blur-xl transition-transform duration-200 md:sticky md:top-0 md:z-auto md:h-screen md:w-72 md:translate-x-0 md:bg-sentry-panel/60",
+          mobileOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
       <div className="p-6 border-b border-border">
-        <div className="flex items-center gap-3">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
           <div className="size-10 rounded-lg bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center sentry-glow-cyan">
             <Shield className="size-5 text-background" strokeWidth={2.5} />
           </div>
-          <div>
-            <h1 className={cn("text-lg font-bold tracking-tight", lang === "ur" && "font-nasta")}>
+          <div className="min-w-0">
+            <h1 className={cn("truncate text-lg font-bold tracking-tight", lang === "ur" && "font-nasta")}>
               {t.appName}
             </h1>
-            <p className="text-[10px] uppercase tracking-widest text-sentry-cyan">{t.tagline}</p>
+            <p className="truncate text-[10px] uppercase tracking-widest text-sentry-cyan">{t.tagline}</p>
           </div>
+          </div>
+          <Button type="button" size="icon" variant="ghost" className="md:hidden" onClick={onMobileClose} aria-label="Close navigation">
+            <X className="size-4" />
+          </Button>
         </div>
       </div>
 
@@ -45,7 +74,7 @@ export function SentrySidebar({
           return (
             <button
               key={it.id}
-              onClick={() => onChange(it.id)}
+              onClick={() => chooseView(it.id)}
               className={cn(
                 "w-full group flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all border",
                 isActive
@@ -81,6 +110,7 @@ export function SentrySidebar({
           </p>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

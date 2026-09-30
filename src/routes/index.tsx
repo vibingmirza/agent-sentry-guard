@@ -51,6 +51,7 @@ function Index() {
 function ShellRouter() {
   const [showLanding, setShowLanding] = useState(true);
   const [view, setView] = useState<SentryView>("user");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { session, theme } = useApp();
 
   // Handle direct navigation shortcuts from the landing actions
@@ -154,7 +155,7 @@ function ShellRouter() {
           </div>
         </main>
 
-        <footer className="absolute bottom-0 w-full py-6 text-center text-[10px] font-mono text-zinc-600 border-t border-white/5 bg-black/20">
+        <footer className="relative mt-12 w-full border-t border-white/5 bg-black/20 px-4 py-6 text-center text-[10px] font-mono text-zinc-600 sm:mt-20">
           © 2026 AgentSentryGuard™ Core Infrastructure. Aligned with SDG 9 Frameworks.
         </footer>
       </div>
@@ -173,20 +174,20 @@ function ShellRouter() {
         {/* Quick escape route anchor back to Landing page if needed */}
         <button 
           onClick={() => setShowLanding(true)}
-          className="absolute bottom-4 left-4 z-50 inline-flex items-center gap-1.5 rounded bg-zinc-900 border border-white/10 px-2.5 py-1 text-[10px] font-mono text-zinc-400 hover:text-white hover:border-emerald-400/40 transition-colors shadow-xl"
+          className="fixed bottom-3 left-3 z-40 hidden items-center gap-1.5 rounded border border-white/10 bg-zinc-900 px-2.5 py-1 text-[10px] font-mono text-zinc-400 shadow-xl transition-colors hover:border-emerald-400/40 hover:text-white md:inline-flex"
         >
           &larr; Exit Console Mode
         </button>
 
-        <SentrySidebar active={view} onChange={setView} />
+        <SentrySidebar active={view} onChange={setView} mobileOpen={mobileNavOpen} onMobileClose={() => setMobileNavOpen(false)} />
         <main className="flex-1 min-w-0 flex flex-col">
-          <Header />
+          <Header onOpenNavigation={() => setMobileNavOpen(true)} />
           <WorkspaceBar />
           <div className="flex-1 min-w-0 flex flex-col">
             {view === "user" && <UserView />}
             {view === "admin" && (
               <div className="space-y-6">
-                <div className="px-8 pt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 px-4 pt-4 md:px-8 md:pt-8 lg:grid-cols-2">
                   <RegionMap />
                   <RiskForecast />
                 </div>
@@ -196,7 +197,7 @@ function ShellRouter() {
             {view === "client" && <ClientView />}
             {view === "analytics" && (
               <div className="space-y-6">
-                <div className="px-8 pt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 px-4 pt-4 md:px-8 md:pt-8 lg:grid-cols-2">
                   <RegionMap />
                   <RiskForecast />
                 </div>

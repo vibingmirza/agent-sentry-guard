@@ -38,7 +38,7 @@ export function LoginModal() {
   return (
     <Dialog open={!session} onOpenChange={() => undefined}>
       <DialogContent
-        className="bg-sentry-panel border-sentry-cyan/40 max-w-md sentry-glow-cyan [&>button.absolute]:hidden"
+        className="max-h-[calc(100dvh-1rem)] w-[calc(100vw-1rem)] max-w-md overflow-y-auto border-sentry-cyan/40 bg-sentry-panel p-4 sm:p-6 sentry-glow-cyan [&>button.absolute]:hidden"
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >

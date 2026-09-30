@@ -16,8 +16,8 @@ export function AuditTrail() {
   const entries = useAuditLog(40);
 
   return (
-    <Card className="bg-sentry-panel border-border mx-8 mb-8">
-      <CardHeader>
+    <Card className="mx-3 mb-4 border-border bg-sentry-panel sm:mx-4 md:mx-8 md:mb-8">
+      <CardHeader className="px-4 sm:px-6">
         <CardTitle className="flex items-center gap-2 text-base">
           <ScrollText className="size-4 text-sentry-cyan" />
           System Compliance & Audit Trail
@@ -26,15 +26,15 @@ export function AuditTrail() {
           Immutable enterprise compliance ledger · {entries.length} events
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="max-h-[360px] overflow-auto rounded-md border border-border">
-          <Table>
+      <CardContent className="px-4 sm:px-6">
+        <div className="max-h-[360px] overflow-auto rounded-md border border-border [overscroll-behavior-inline:contain]">
+          <Table className="min-w-[680px]">
             <TableHeader className="sticky top-0 bg-sentry-panel-2 z-10">
               <TableRow>
-                <TableHead className="w-[180px]">Timestamp</TableHead>
-                <TableHead className="w-[110px]">Category</TableHead>
+                <TableHead className="min-w-[180px]">Timestamp</TableHead>
+                <TableHead className="min-w-[110px]">Category</TableHead>
                 <TableHead>Event</TableHead>
-                <TableHead className="w-[140px]">Actor</TableHead>
+                <TableHead className="min-w-[140px]">Actor</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

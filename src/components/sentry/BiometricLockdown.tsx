@@ -7,10 +7,10 @@ export function BiometricLockdown() {
   if (!scanning && !lockdown) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-md bg-background/70">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-background/70 p-4 backdrop-blur-md">
       {scanning && (
-        <div className="text-center space-y-6">
-          <div className="relative size-40 mx-auto">
+        <div className="space-y-6 text-center">
+          <div className="relative mx-auto size-32 sm:size-40">
             <div className="absolute inset-0 rounded-full border-2 border-sentry-cyan/30" />
             <div className="absolute inset-0 rounded-full border-t-2 border-sentry-cyan animate-spin" />
             <Fingerprint className="absolute inset-0 m-auto size-20 text-sentry-cyan animate-pulse" />
@@ -23,12 +23,12 @@ export function BiometricLockdown() {
         </div>
       )}
       {lockdown && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center red-alert-pulse">
-          <ShieldAlert className="size-24 text-sentry-crimson mb-4" style={{ filter: "drop-shadow(0 0 20px currentColor)" }} />
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center red-alert-pulse">
+          <ShieldAlert className="mb-4 size-16 text-sentry-crimson sm:size-24" style={{ filter: "drop-shadow(0 0 20px currentColor)" }} />
           <div className="text-3xl md:text-5xl font-black tracking-widest text-sentry-crimson mb-2 text-center">
             {t.locked}
           </div>
-          <div className="text-xs uppercase tracking-[0.3em] text-sentry-crimson/80 mb-8">
+          <div className="mb-8 text-xs uppercase tracking-widest text-sentry-crimson/80 sm:tracking-[0.3em]">
             Director auth required to disengage
           </div>
           <Button

@@ -180,9 +180,9 @@ export function WarRoom() {
   const liveRate = baseRate * (1 + surge);
 
   return (
-    <div className="p-8 space-y-6">
-      <header className="flex items-end justify-between gap-4 flex-wrap">
-        <div>
+    <div className="space-y-6 p-4 md:p-8">
+      <header className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.3em] text-[color:var(--war-cyan)]">
             Strategic War Room
           </div>
@@ -209,7 +209,7 @@ export function WarRoom() {
               onClick={() => !running && setScenario(s)}
               disabled={running}
               className={cn(
-                "war-tile text-left p-5 flex flex-col gap-3 disabled:opacity-60",
+                "war-tile flex flex-col gap-3 p-4 text-left disabled:opacity-60 md:p-5",
                 active && "war-tile--active",
               )}
             >
@@ -230,7 +230,7 @@ export function WarRoom() {
               </div>
               <h3 className="font-semibold leading-tight">{s.name}</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">{s.blurb}</p>
-              <div className="grid grid-cols-2 gap-2 mt-1 text-[10px] uppercase tracking-widest">
+              <div className="mt-1 grid grid-cols-1 gap-2 text-[10px] uppercase tracking-widest sm:grid-cols-2">
                 <div className="war-chip">{s.vector}</div>
                 <div className="war-chip">{s.velocity}</div>
               </div>
@@ -240,7 +240,7 @@ export function WarRoom() {
       </section>
 
       {/* Controller bar */}
-      <section className="war-panel p-5">
+      <section className="war-panel p-4 md:p-5">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <Button
@@ -271,7 +271,7 @@ export function WarRoom() {
         </div>
 
         {/* Stage timeline */}
-        <ol className="mt-5 grid grid-cols-4 gap-2">
+        <ol className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-4">
           {[
             { n: 1, label: "Reconnaissance", icon: Radar },
             { n: 2, label: "Penetration", icon: ShieldAlert },
@@ -310,8 +310,8 @@ export function WarRoom() {
 
       {/* Map + Terminal */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="war-panel p-5 lg:col-span-2">
-          <div className="flex items-center justify-between mb-3">
+        <div className="war-panel p-4 md:p-5 lg:col-span-2">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 mb-3">
             <div className="flex items-center gap-2">
               <Crosshair className="size-4 text-[color:var(--war-cyan)]" />
               <h3 className="text-sm font-semibold">Live Engagement · Sovereign Grid</h3>
@@ -325,8 +325,8 @@ export function WarRoom() {
           </div>
         </div>
 
-        <div className="war-panel p-5">
-          <div className="flex items-center justify-between mb-3">
+        <div className="war-panel p-4 md:p-5">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 mb-3">
             <div className="flex items-center gap-2">
               <Activity className="size-4 text-[color:var(--war-purple)]" />
               <h3 className="text-sm font-semibold">War Room Terminal</h3>
@@ -337,7 +337,7 @@ export function WarRoom() {
           </div>
           <div className="h-[320px] overflow-y-auto rounded-md border border-border bg-black/40 p-3 font-mono text-[11px] leading-relaxed">
             {feed.map((l, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="grid grid-cols-[auto_minmax(0,1fr)] gap-2">
                 <span className="text-muted-foreground">{l.ts}</span>
                 <span
                   className={cn(

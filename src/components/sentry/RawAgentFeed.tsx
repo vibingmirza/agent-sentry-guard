@@ -48,7 +48,7 @@ export function RawAgentFeed() {
 
   return (
     <div className="border-t border-border bg-sentry-panel/95 backdrop-blur-xl">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-border">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 border-b border-border px-3 py-2 sm:px-4">
         <div className="flex items-center gap-2">
           <Terminal className="size-3.5 text-sentry-emerald" />
           <span className="text-[11px] uppercase tracking-widest text-sentry-emerald font-mono font-bold">
@@ -66,10 +66,10 @@ export function RawAgentFeed() {
       </div>
       <div
         ref={ref}
-        className="font-mono-tech text-[11px] leading-relaxed px-4 py-2 h-40 overflow-y-auto bg-black/40"
+        className="h-32 overflow-auto bg-background/40 px-3 py-2 font-mono-tech text-[11px] leading-relaxed sm:h-40 sm:px-4"
       >
         {lines.map((l) => (
-          <div key={l.id} className="flex gap-3 hover:bg-sentry-panel/50">
+          <div key={l.id} className="grid min-w-[620px] grid-cols-[auto_3rem_8rem_minmax(0,1fr)] gap-3 hover:bg-sentry-panel/50">
             <span className="text-muted-foreground shrink-0">{l.ts}</span>
             <span
               className={cn(
