@@ -105,13 +105,13 @@ requests.post(
 )`;
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="space-y-6 p-4 md:p-8">
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
+        <h1 className="flex items-center gap-2 text-xl font-bold sm:text-2xl">
           <Code2 className="size-6 text-sentry-cyan" />
           Developer API Suite
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="mt-1 break-words text-sm text-muted-foreground">
           Stream real telemetry into Agent-Sentry · public ingest at{" "}
           <code className="text-sentry-cyan font-mono">/api/public/logs</code>
         </p>
@@ -131,13 +131,13 @@ requests.post(
             <div className="flex items-center gap-2 p-3 rounded-md bg-sentry-panel-2 border border-border font-mono text-xs break-all">
               {displayKey}
             </div>
-            <div className="flex gap-2">
+            <div className="grid gap-2 sm:flex">
               <Button
                 onClick={() => {
                   const k = generateApiKey();
                   toast.success("Secret key generated", { description: k });
                 }}
-                className="bg-sentry-cyan text-background hover:bg-sentry-cyan/90 font-semibold"
+                className="w-full bg-sentry-cyan font-semibold text-background hover:bg-sentry-cyan/90 sm:w-auto"
               >
                 <Key className="size-3.5 mr-1.5" />
                 Generate New Secret Key
@@ -166,7 +166,7 @@ requests.post(
             <Button
               onClick={triggerSandboxPing}
               disabled={pinging}
-              className="bg-sentry-emerald text-background hover:bg-sentry-emerald/90 sentry-glow-emerald font-bold uppercase tracking-wider h-11"
+              className="h-auto min-h-11 w-full whitespace-normal bg-sentry-emerald py-3 font-bold uppercase tracking-wider text-background hover:bg-sentry-emerald/90 sentry-glow-emerald"
             >
               {pinging ? (
                 <Loader2 className="size-4 mr-2 animate-spin" />
@@ -273,8 +273,8 @@ function CodeBlock({
 }) {
   return (
     <Card className="bg-sentry-panel border-border">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-sm flex items-center gap-2">
+      <CardHeader className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 space-y-0">
+        <CardTitle className="flex min-w-0 items-center gap-2 text-sm">
           <Code2 className="size-4 text-sentry-cyan" />
           {title}
         </CardTitle>

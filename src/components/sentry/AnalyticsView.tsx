@@ -70,7 +70,7 @@ export function AnalyticsView() {
   const blockRate = total ? ((blocked / total) * 100).toFixed(1) + "%" : "—";
 
   return (
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl space-y-6 p-4 md:space-y-8 md:p-8">
       <header>
         <p className="text-xs uppercase tracking-[0.2em] text-sentry-cyan mb-2">Analytics Insights</p>
         <h2 className="text-2xl font-bold">Threat Intelligence Overview</h2>
@@ -82,8 +82,8 @@ export function AnalyticsView() {
       <SystemDiagnostics />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <section className="rounded-xl border border-border bg-sentry-panel p-6">
-          <div className="flex items-center justify-between mb-6">
+        <section className="rounded-lg border border-border bg-sentry-panel p-4 md:p-6">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 mb-6">
             <div className="flex items-center gap-2">
               <BarChart3 className="size-4 text-sentry-cyan" />
               <h3 className="font-semibold">Alerts by Severity</h3>
@@ -117,8 +117,8 @@ export function AnalyticsView() {
           </div>
         </section>
 
-        <section className="rounded-xl border border-border bg-sentry-panel p-6">
-          <div className="flex items-center justify-between mb-6">
+        <section className="rounded-lg border border-border bg-sentry-panel p-4 md:p-6">
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 mb-6">
             <div className="flex items-center gap-2">
               <TrendingUp className="size-4 text-sentry-emerald" />
               <h3 className="font-semibold">Security Incidents Over Time</h3>
@@ -160,7 +160,7 @@ export function AnalyticsView() {
         </section>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {[
           { label: "Total Alerts", value: String(total), accent: "text-sentry-cyan" },
           { label: "Critical Threats", value: String(critical), accent: "text-sentry-crimson" },

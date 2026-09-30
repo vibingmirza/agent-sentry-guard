@@ -27,7 +27,7 @@ export function SystemDiagnostics() {
 
   return (
     <section>
-      <div className="flex items-center gap-2 mb-4">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 mb-4">
         <Server className="size-4 text-sentry-cyan" />
         <h3 className="font-semibold">System Performance &amp; Diagnostics</h3>
         <span className="ml-auto text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -59,7 +59,7 @@ export function SystemDiagnostics() {
             {agents.online} <span className="text-muted-foreground text-xl">/ {agents.total}</span>
           </div>
           <div className="text-xs text-muted-foreground mt-1">Sentry Nodes Connected</div>
-          <div className="mt-auto pt-4 grid grid-cols-7 gap-1">
+          <div className="mt-auto grid grid-cols-4 gap-1 pt-4 sm:grid-cols-7">
             {Array.from({ length: agents.total }).map((_, i) => (
               <div
                 key={i}

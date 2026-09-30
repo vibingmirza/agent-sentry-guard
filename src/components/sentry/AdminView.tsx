@@ -190,22 +190,22 @@ export function AdminView() {
 
   return (
     <TooltipProvider delayDuration={150}>
-    <div className="p-8 space-y-8 max-w-7xl mx-auto">
-      <header className="flex items-end justify-between flex-wrap gap-4">
-        <div>
+    <div className="mx-auto max-w-7xl space-y-6 p-4 md:space-y-8 md:p-8">
+      <header className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <div className="min-w-0">
           <p className="text-xs uppercase tracking-[0.2em] text-sentry-cyan mb-2">Admin View</p>
           <h2 className={cn("text-2xl font-bold", lang === "ur" && "font-nasta")}>
             Safety &amp; Infrastructure Dashboard
           </h2>
-          <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+          <p className="mt-1 flex items-start gap-2 text-sm text-muted-foreground sm:items-center">
             <BadgeCheck className="size-4 text-sentry-cyan" />
             Acting Authority: <span className="font-semibold text-foreground">{t.directorName}</span> · {t.director}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="grid gap-3 sm:flex sm:items-center">
           <Button
             onClick={simulateIncident}
-            className="bg-sentry-panel-2 border border-sentry-cyan/40 text-sentry-cyan hover:bg-sentry-cyan/10 hover:text-sentry-cyan font-semibold uppercase tracking-wider sentry-glow-cyan"
+            className="w-full border border-sentry-cyan/40 bg-sentry-panel-2 font-semibold uppercase tracking-wider text-sentry-cyan hover:bg-sentry-cyan/10 hover:text-sentry-cyan sm:w-auto sentry-glow-cyan"
           >
             <Siren className="size-4 mr-1" />
             Simulate Incident
@@ -240,8 +240,8 @@ export function AdminView() {
       </div>
 
       {/* Filters Panel */}
-      <section className="rounded-xl border border-border bg-sentry-panel p-5 space-y-4">
-        <div className="flex items-center gap-2">
+      <section className="space-y-4 rounded-lg border border-border bg-sentry-panel p-4 md:p-5">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
           <Filter className="size-4 text-sentry-cyan" />
           <h3 className="font-semibold text-sm">Data Controls</h3>
           <span className="ml-auto text-xs text-muted-foreground">
@@ -273,7 +273,7 @@ export function AdminView() {
               </SelectContent>
             </Select>
           </div>
-          <div className="lg:col-span-5 flex items-center justify-end gap-2 flex-wrap">
+          <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-end lg:col-span-5">
             <Button
               variant="ghost"
               size="sm"
@@ -284,7 +284,7 @@ export function AdminView() {
             </Button>
             <Button
               onClick={exportCsv}
-              className="bg-sentry-cyan/15 border border-sentry-cyan/40 text-sentry-cyan hover:bg-sentry-cyan/25 hover:text-sentry-cyan font-semibold"
+              className="w-full border border-sentry-cyan/40 bg-sentry-cyan/15 font-semibold text-sentry-cyan hover:bg-sentry-cyan/25 hover:text-sentry-cyan sm:w-auto"
             >
               <Download className="size-4 mr-1.5" />
               Export CSV Audit Report
@@ -313,7 +313,7 @@ export function AdminView() {
 
       {/* Active alerts */}
       <section className="rounded-xl border border-border bg-sentry-panel overflow-hidden">
-        <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-4 sm:px-6">
           <h3 className="font-semibold flex items-center gap-2">
             <ShieldCheck className="size-4 text-sentry-cyan" /> Live Audit Logs
           </h3>
@@ -322,7 +322,7 @@ export function AdminView() {
           </span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="min-w-[820px] w-full text-sm">
             <thead className="bg-sentry-panel-2 text-[10px] uppercase tracking-wider text-muted-foreground">
               <tr>
                 <th className="text-left px-6 py-3 font-medium">Prompt</th>
@@ -423,7 +423,7 @@ export function AdminView() {
 
       {/* Active Security Rules */}
       <section className="rounded-xl border border-sentry-emerald/40 bg-gradient-to-br from-sentry-emerald/5 to-transparent overflow-hidden">
-        <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-4 sm:px-6">
           <h3 className="font-semibold flex items-center gap-2">
             <Lock className="size-4 text-sentry-emerald" /> {t.activeRules}
           </h3>
@@ -432,7 +432,7 @@ export function AdminView() {
           </span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="min-w-[780px] w-full text-sm">
             <thead className="bg-sentry-panel-2/60 text-[10px] uppercase tracking-wider text-muted-foreground">
               <tr>
                 <th className="text-left px-6 py-3 font-medium">Rule</th>
@@ -483,7 +483,7 @@ export function AdminView() {
 
       {/* Archived */}
       <section className="rounded-xl border border-border bg-sentry-panel/60 overflow-hidden">
-        <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border px-4 py-4 sm:px-6">
           <h3 className="font-semibold flex items-center gap-2">
             <Archive className="size-4 text-muted-foreground" /> Archived Logs
           </h3>
@@ -492,7 +492,7 @@ export function AdminView() {
           </span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="min-w-[820px] w-full text-sm">
             <thead className="bg-sentry-panel-2/60 text-[10px] uppercase tracking-wider text-muted-foreground">
               <tr>
                 <th className="text-left px-6 py-3 font-medium">Prompt</th>
@@ -541,8 +541,8 @@ export function AdminView() {
       </section>
 
       {/* Kill switch */}
-      <section className="rounded-xl border border-sentry-crimson/40 bg-gradient-to-br from-sentry-crimson/10 to-transparent p-6 flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
+      <section className="grid gap-4 rounded-lg border border-sentry-crimson/40 bg-gradient-to-br from-sentry-crimson/10 to-transparent p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center md:p-6">
+        <div className="flex min-w-0 items-start gap-4 sm:items-center">
           <div className="size-12 rounded-lg bg-sentry-crimson/20 border border-sentry-crimson/50 flex items-center justify-center">
             <Power className="size-6 text-sentry-crimson" />
           </div>
@@ -556,7 +556,7 @@ export function AdminView() {
         <Button
           onClick={triggerKill}
           className={cn(
-            "font-bold uppercase tracking-wider px-6 h-12",
+            "h-12 w-full px-6 font-bold uppercase tracking-wider sm:w-auto",
             killed
               ? "bg-sentry-emerald text-background hover:bg-sentry-emerald/90"
               : "bg-sentry-crimson text-background hover:bg-sentry-crimson/90 sentry-glow-crimson",
