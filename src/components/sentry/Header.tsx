@@ -1,4 +1,4 @@
-import { Sun, Moon, Zap, Globe2, MapPin, Languages, Clock3, DollarSign, BadgeCheck, Fingerprint, LogOut, ShieldAlert } from "lucide-react";
+import { Sun, Moon, Zap, Globe2, MapPin, Languages, Clock3, DollarSign, BadgeCheck, Fingerprint, LogOut, ShieldAlert, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,7 @@ const THEMES: { id: Theme; icon: typeof Sun; label: string }[] = [
   { id: "cyber", icon: Zap, label: "Cyber SOC" },
 ];
 
-export function Header() {
+export function Header({ onOpenNavigation }: { onOpenNavigation?: () => void }) {
   const {
     session,
     logout,
@@ -30,60 +30,51 @@ export function Header() {
   return (
     <TooltipProvider delayDuration={150}>
       <header className="sticky top-0 z-40 border-b border-border bg-sentry-panel/80 backdrop-blur-xl">
-        <div className="flex items-center gap-3 px-6 py-3 flex-wrap">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:px-4 md:flex md:flex-wrap md:gap-3 md:px-6 md:py-3">
+          <Button type="button" size="icon" variant="outline" className="shrink-0 md:hidden" onClick={onOpenNavigation} aria-label="Open navigation">
+            <Menu className="size-4" />
+          </Button>
           {/* Director identity */}
-          <div className="flex items-center gap-2 pr-3 mr-1 border-r border-border">
+          <div className="flex min-w-0 items-center gap-2 md:pr-3 md:mr-1 md:border-r md:border-border">
             <div className="size-8 rounded-md bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center">
               <BadgeCheck className="size-4 text-background" />
             </div>
-            <div className="leading-tight">
-              <div className={cn("text-sm font-bold", lang === "ur" && "font-nasta")}>
+            <div className="min-w-0 leading-tight">
+              <div className={cn("truncate text-sm font-bold", lang === "ur" && "font-nasta")}>
                 {t.directorName}
               </div>
-              <div className="text-[10px] uppercase tracking-widest text-sentry-cyan">
+              <div className="hidden truncate text-[10px] uppercase tracking-widest text-sentry-cyan sm:block">
                 {t.director}
               </div>
             </div>
           </div>
 
           {/* Billing widget */}
-          <BillingChip
-            icon={Clock3}
-            label={t.monitoring}
-            value={formatDuration(monitoringSeconds)}
-            mono
-          />
-          <BillingChip
-            icon={DollarSign}
-            label={t.computeCost}
-            value={`$${computeCost.toFixed(2)} · $5.00/hr`}
-          />
-          <BillingChip
-            icon={BadgeCheck}
-            label={t.license}
-            value={t.enterprise}
-            accent="emerald"
-          />
+          <div className="order-4 col-span-3 hidden w-full gap-2 overflow-x-auto md:order-none md:flex md:w-auto">
+            <BillingChip icon={Clock3} label={t.monitoring} value={formatDuration(monitoringSeconds)} mono />
+            <BillingChip icon={DollarSign} label={t.computeCost} value={`$${computeCost.toFixed(2)} · $5.00/hr`} />
+            <BillingChip icon={BadgeCheck} label={t.license} value={t.enterprise} accent="emerald" />
+          </div>
 
-          <div className="ml-auto flex items-center gap-2 flex-wrap">
+          <div className="ml-auto flex shrink-0 items-center gap-1.5 md:gap-2">
             {/* Region selector */}
-            <SegmentedToggle<Region>
+            <div className="hidden sm:block"><SegmentedToggle<Region>
               value={region}
               onChange={setRegion}
               items={[
                 { id: "pakistan", icon: MapPin, label: t.pakistan, tip: `${t.region}: ${t.pakistan}` },
                 { id: "global", icon: Globe2, label: t.global, tip: `${t.region}: ${t.global}` },
               ]}
-            />
+            /></div>
             {/* Language */}
-            <SegmentedToggle<Lang>
+            <div className="hidden lg:block"><SegmentedToggle<Lang>
               value={lang}
               onChange={setLang}
               items={[
                 { id: "en", icon: Languages, label: "EN", tip: "English" },
                 { id: "ur", icon: Languages, label: "اردو", tip: "Urdu (Nasta'liq)", labelClass: "font-nasta text-base" },
               ]}
-            />
+            /></div>
             {/* Theme */}
             <SegmentedToggle<Theme>
               value={theme}
