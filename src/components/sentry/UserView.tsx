@@ -82,8 +82,8 @@ export function UserView() {
   ];
 
   return (
-    <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
-      <header className="px-8 py-6 border-b border-border">
+    <div className="mx-auto flex h-full w-full max-w-4xl flex-col">
+      <header className="border-b border-border px-4 py-5 md:px-8 md:py-6">
         <p className="text-xs uppercase tracking-[0.2em] text-sentry-cyan mb-2 flex items-center gap-1.5">
           <Sparkles className="size-3" />
           Playground · Simulation Core Active
@@ -94,7 +94,7 @@ export function UserView() {
         </p>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-8 py-6 space-y-4">
+      <div className="flex-1 space-y-4 overflow-y-auto px-4 py-5 md:px-8 md:py-6">
         {messages.map((m) => (
           <MessageBubble key={m.id} message={m} />
         ))}
@@ -103,7 +103,7 @@ export function UserView() {
             <div className="size-9 rounded-lg bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center shrink-0">
               <Bot className="size-4 text-background" />
             </div>
-            <div className="flex-1 space-y-2 max-w-[75%]">
+            <div className="max-w-[calc(100%-3rem)] flex-1 space-y-2 sm:max-w-[75%]">
               <Skeleton className="h-3 w-3/4 sentry-shimmer" />
               <Skeleton className="h-3 w-1/2 sentry-shimmer" />
             </div>
@@ -112,13 +112,13 @@ export function UserView() {
         <div ref={endRef} />
       </div>
 
-      <div className="px-8 pb-3 flex flex-wrap gap-2">
+      <div className="flex gap-2 overflow-x-auto px-4 pb-3 md:flex-wrap md:px-8">
         {examples.map((e) => (
           <button
             key={e}
             onClick={() => send(e)}
             disabled={loading}
-            className="text-xs px-3 py-1.5 rounded-full border border-border bg-sentry-panel hover:border-sentry-cyan/50 transition-colors text-muted-foreground hover:text-foreground disabled:opacity-50"
+            className="shrink-0 rounded-full border border-border bg-sentry-panel px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-sentry-cyan/50 hover:text-foreground disabled:opacity-50"
           >
             {e}
           </button>
@@ -130,9 +130,9 @@ export function UserView() {
           e.preventDefault();
           send(input);
         }}
-        className="px-8 pb-8 pt-2"
+        className="px-4 pb-5 pt-2 md:px-8 md:pb-8"
       >
-        <div className="flex gap-2 p-2 rounded-xl border border-border bg-sentry-panel">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 rounded-xl border border-border bg-sentry-panel p-2">
           <Input
             ref={inputRef}
             value={input}
@@ -169,7 +169,7 @@ function MessageBubble({ message }: { message: MockMessage }) {
       >
         {isUser ? <User className="size-4" /> : <Bot className="size-4 text-background" />}
       </div>
-      <div className={cn("max-w-[75%] space-y-2", isUser && "items-end flex flex-col")}>
+      <div className={cn("max-w-[calc(100%-3rem)] space-y-2 break-words sm:max-w-[75%]", isUser && "items-end flex flex-col")}>
         <div
           className={cn(
             "px-4 py-3 rounded-2xl border text-sm leading-relaxed whitespace-pre-wrap",

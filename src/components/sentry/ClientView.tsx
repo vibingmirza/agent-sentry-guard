@@ -17,7 +17,7 @@ export function ClientView() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-8">
+    <div className="mx-auto max-w-5xl space-y-6 p-4 md:space-y-8 md:p-8">
       <header>
         <p className="text-xs uppercase tracking-[0.2em] text-sentry-cyan mb-2">Client View</p>
         <h2 className="text-2xl font-bold">Corporate Compliance Office</h2>
@@ -27,7 +27,7 @@ export function ClientView() {
       </header>
 
       {/* Certificate */}
-      <section className="relative rounded-2xl border border-sentry-cyan/30 bg-gradient-to-br from-sentry-panel via-sentry-panel-2 to-sentry-panel p-10 overflow-hidden">
+      <section className="relative overflow-hidden rounded-lg border border-sentry-cyan/30 bg-gradient-to-br from-sentry-panel via-sentry-panel-2 to-sentry-panel p-4 sm:p-6 md:p-10">
         <div className="absolute inset-0 sentry-grid-bg opacity-40 pointer-events-none" />
         <div className="absolute top-0 right-0 size-64 bg-sentry-cyan/10 blur-3xl rounded-full pointer-events-none" />
         <div className="absolute bottom-0 left-0 size-64 bg-sentry-emerald/10 blur-3xl rounded-full pointer-events-none" />
@@ -48,12 +48,12 @@ export function ClientView() {
           </div>
         </div>
 
-        <div className="relative text-center py-8">
+        <div className="relative py-6 text-center md:py-8">
           <Award className="size-14 mx-auto text-sentry-cyan mb-4" />
-          <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground mb-3">
+          <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground sm:tracking-[0.4em]">
             This is to certify
           </p>
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight bg-gradient-to-r from-sentry-cyan via-foreground to-sentry-emerald bg-clip-text text-transparent">
+          <h1 className="bg-gradient-to-r from-sentry-cyan via-foreground to-sentry-emerald bg-clip-text text-2xl font-bold leading-tight text-transparent sm:text-3xl md:text-4xl">
             National AI Sovereignty<br />& Safety Certificate
           </h1>
           <p className="max-w-2xl mx-auto mt-6 text-sm text-muted-foreground leading-relaxed">
@@ -69,7 +69,7 @@ export function ClientView() {
           <Badge icon={ShieldCheck} label="Tier-1 Agent Audit" tone="cyan" />
         </div>
 
-        <div className="relative flex items-end justify-between mt-10 pt-6 border-t border-border flex-wrap gap-4">
+        <div className="relative mt-8 grid gap-5 border-t border-border pt-6 text-center sm:grid-cols-3 sm:items-end sm:text-left md:mt-10">
           <div>
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Date of Issue</div>
             <div className="text-sm font-semibold">{today}</div>
@@ -80,7 +80,7 @@ export function ClientView() {
               Director of Sovereign Intelligence
             </div>
           </div>
-          <div className="text-right">
+          <div className="sm:text-right">
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Valid Through</div>
             <div className="text-sm font-semibold">31 December 2026</div>
           </div>
@@ -88,7 +88,7 @@ export function ClientView() {
       </section>
 
       {/* Download */}
-      <section className="rounded-xl border border-border bg-sentry-panel p-6 flex items-center justify-between flex-wrap gap-4">
+      <section className="grid gap-4 rounded-lg border border-border bg-sentry-panel p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center md:p-6">
         <div>
           <h3 className="font-bold">Audit PDF Log</h3>
           <p className="text-xs text-muted-foreground mt-1">
@@ -97,7 +97,7 @@ export function ClientView() {
         </div>
         <Button
           onClick={downloadLog}
-          className="bg-sentry-cyan text-background hover:bg-sentry-cyan/90 sentry-glow-cyan font-semibold h-11 px-5"
+          className="h-11 w-full bg-sentry-cyan px-5 font-semibold text-background hover:bg-sentry-cyan/90 sm:w-auto sentry-glow-cyan"
         >
           <Download className="size-4 mr-2" />
           Download Audit PDF Log

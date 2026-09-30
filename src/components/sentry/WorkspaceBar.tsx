@@ -23,26 +23,26 @@ export function WorkspaceBar() {
   return (
     <div className="border-b border-border bg-sentry-panel-2/60 backdrop-blur-md">
       {locked && (
-        <div className="bg-sentry-crimson/15 border-b border-sentry-crimson/50 px-6 py-2 text-center text-xs md:text-sm font-bold tracking-wider text-sentry-crimson red-alert-pulse">
+          <div className="red-alert-pulse border-b border-sentry-crimson/50 bg-sentry-crimson/15 px-4 py-2 text-center text-xs font-bold tracking-wider text-sentry-crimson md:px-6 md:text-sm">
           SYSTEM STATE: AIR-GAPPED. ALL OUTBOUND AI TRAFFIC INTERCEPTED.
         </div>
       )}
-      <div className="flex items-center gap-4 px-6 py-2.5 flex-wrap">
-        <div className="flex items-center gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-2.5 sm:flex sm:flex-wrap sm:px-6">
+        <div className="flex min-w-0 items-center gap-2">
           <div className="size-7 rounded-md bg-gradient-to-br from-sentry-cyan to-sentry-emerald flex items-center justify-center">
             <Building2 className="size-3.5 text-background" />
           </div>
-          <div className="leading-tight">
+          <div className="min-w-0 leading-tight">
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
               Enterprise Workspace
             </div>
-            <div className="text-sm font-bold">{workspace}</div>
+            <div className="truncate text-sm font-bold">{workspace}</div>
           </div>
         </div>
 
         <div className="h-8 w-px bg-border mx-1 hidden md:block" />
 
-        <div className="flex items-center gap-2">
+        <div className="order-3 col-span-2 flex min-w-0 items-center gap-2 sm:order-none sm:col-span-1">
           <GitBranch className="size-3.5 text-muted-foreground" />
           <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
             Environment
@@ -50,7 +50,7 @@ export function WorkspaceBar() {
           <Select value={environment} onValueChange={(v) => setEnvironment(v as Environment)}>
             <SelectTrigger
               className={cn(
-                "h-8 w-[150px] text-xs font-semibold uppercase tracking-wider border",
+                "h-8 min-w-0 flex-1 text-xs font-semibold uppercase tracking-wider border sm:w-[150px] sm:flex-none",
                 ENV_TONE[environment],
               )}
             >
@@ -64,7 +64,7 @@ export function WorkspaceBar() {
           </Select>
         </div>
 
-        <div className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="ml-auto flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
           <Activity className={cn("size-3.5", locked ? "text-sentry-crimson" : "text-sentry-emerald")} />
           <span className="font-mono">
             {locked ? "AIR-GAPPED" : "OPERATIONAL"}
